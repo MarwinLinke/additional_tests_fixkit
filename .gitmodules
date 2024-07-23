@@ -1,0 +1,6 @@
+[submodule "fixkit"]
+	path = fixkit
+	url = https://github.com/smythi93/fixkit.git
+[submodule "avicenna"]
+	path = avicenna
+	url = https://github.com/martineberlein/avicenna.git
