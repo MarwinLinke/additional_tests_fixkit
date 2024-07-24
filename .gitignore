@@ -1,1 +1,5 @@
 venv/
+venv3.11/
+tmp/
+sflkit_events/
+rep/
