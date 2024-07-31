@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./fixkit/src",
+        "./avicenna/src"
+    ]
+}

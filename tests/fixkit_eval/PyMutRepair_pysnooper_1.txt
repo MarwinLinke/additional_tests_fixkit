@@ -1,0 +1,3 @@
+PyMutRepair,pysnooper_1,True,19.495512008666992
+FITNESS:
+[GeneticCandidate@tmp/pysnooper_1(0)[1.00]]
