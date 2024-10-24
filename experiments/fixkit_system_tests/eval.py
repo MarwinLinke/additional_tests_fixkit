@@ -1,8 +1,7 @@
-import argparse
 import random
 import time
 from pathlib import Path
-from typing import Type, Dict, Any, Tuple
+from typing import Type, Dict, Any
 
 import numpy as np
 import tests4py.api as t4p
@@ -11,7 +10,7 @@ from tests4py.projects import Project
 from fixkit.constants import DEFAULT_EXCLUDES
 from fixkit.fitness.engine import Tests4PyEngine
 from fixkit.fitness.metric import AbsoluteFitness
-from fixkit.localization.t4p import Tests4PyLocalization
+from fixkit.localization.t4p import *
 from fixkit.repair import GeneticRepair
 from fixkit.repair.pygenprog import PyGenProg
 from fixkit.repair.pykali import PyKali
@@ -75,9 +74,6 @@ SUBJECTS = {
     "CALCULATOR": {
         1: t4p.calculator_1,
     },
-    "CALCULATOR": {
-        1: t4p.calculator_1,
-    },
     "PYSNOOPER": {
         1: t4p.pysnooper_1,
         2: t4p.pysnooper_2,
@@ -97,19 +93,35 @@ def evaluate(
     if report.raised:
         raise report.raised
     start = time.time()
+
+    test_cases = [
+            os.path.abspath(
+                os.path.join(
+                    "tmp",
+                    str(subject.get_identifier()),
+                    "tests4py_systemtest_diversity",
+                    f"{passing}_test_diversity_{i}",
+                )
+            ) for passing, i in zip(["passing", "failing"], range(10))
+        ]
+    
     approach = approach.from_source(
         src=Path("tmp", subject.get_identifier()),
         excludes=DEFAULT_EXCLUDES,
-        localization=Tests4PyLocalization(
+        localization=Tests4PySystemtestsLocalization(
             src=Path("tmp", subject.get_identifier()),
             events=["line"],
             predicates=["line"],
             metric="Ochiai",
             out="rep",
+            tests = test_cases
+
         ),
         out="rep",
         is_t4p=True,
         max_generations=iterations,
+        is_system_test = True,
+        system_tests = test_cases,
         **parameters,
     )
     patches = approach.repair()
@@ -123,52 +135,14 @@ def evaluate(
             break
     return patches, found, duration
 
-
-def parse_args(args) -> Tuple[Tuple[Type[GeneticRepair], Dict[str, Any]], Project]:
-    parser = argparse.ArgumentParser(description="Evaluate the repair approaches.")
-    parser.add_argument(
-        "-a",
-        help="The repair approach to evaluate.",
-        required=True,
-        dest="approach",
-    )
-    parser.add_argument(
-        "-s",
-        help="The subject to evaluate.",
-        required=True,
-        dest="subject",
-    )
-    parser.add_argument(
-        "-i",
-        help="The bug id to evaluate.",
-        required=True,
-        type=int,
-        dest="bug_id",
-    )
-    parser.add_argument(
-        "-k",
-        help="The number of iterations.",
-        required=True,
-        type=int,
-        dest="iterations",
-    )
-    args = parser.parse_args(args)
-    return (
-        APPROACHES[args.approach.upper()],
-        SUBJECTS[args.subject.upper()][args.bug_id],
-        args.iterations
-    )
-
-
-def main(args):
-    approach, subject, iterations = parse_args(args)
+def main():
+    approach = APPROACHES["GENPROG"]
     approach, parameters = approach
+    subject = SUBJECTS["CALCULATOR"][1]
+    iterations = 3
     pacthes, found, duration = evaluate(approach, subject, parameters, iterations)
     with open(f"{approach.__name__}_{subject.get_identifier()}.txt", "w") as f:
         f.write(f"{approach.__name__},{subject.get_identifier()},{found},{duration}\nFITNESS:\n{pacthes}")
 
-
 if __name__ == "__main__":
-    import sys
-
-    main(sys.argv[1:])
+    main()
