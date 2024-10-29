@@ -9,6 +9,8 @@ from tests4py.projects import Project
 
 from fixkit.constants import DEFAULT_EXCLUDES
 from fixkit.fitness.engine import Tests4PyEngine
+from fixkit.fitness.engine import Tests4PySystemTestEngine
+from fixkit.repair.patch import get_patch
 from fixkit.fitness.metric import AbsoluteFitness
 from fixkit.localization.t4p import *
 from fixkit.repair import GeneticRepair
@@ -95,16 +97,18 @@ def evaluate(
     start = time.time()
 
     test_cases = [
-            os.path.abspath(
-                os.path.join(
-                    "tmp",
-                    str(subject.get_identifier()),
-                    "tests4py_systemtest_diversity",
-                    f"{passing}_test_diversity_{i}",
-                )
-            ) for passing, i in zip(["passing", "failing"], range(10))
-        ]
+        os.path.abspath(
+            os.path.join(
+                "tmp",
+                str(subject.get_identifier()),
+                "tests4py_systemtest_diversity",
+                f"{status}_test_diversity_{i}",
+            )
+        ) for status in ["passing", "failing"] for i in range(10)
+    ]
     
+    print(test_cases)
+
     approach = approach.from_source(
         src=Path("tmp", subject.get_identifier()),
         excludes=DEFAULT_EXCLUDES,
@@ -126,13 +130,19 @@ def evaluate(
     )
     patches = approach.repair()
     duration = time.time() - start
+
+    print("Starting evaluation engine.")
+
     found = False
-    engine = Tests4PyEngine(AbsoluteFitness(set(), set()), workers=32, out="rep")
+    
+    engine = Tests4PySystemTestEngine(AbsoluteFitness(set(), set()), test_cases, workers=32, out="rep")
     engine.evaluate(patches)
     for patch in patches:
         if almost_equal(patch.fitness, 1):
+            print(get_patch(patch))
             found = True
             break
+
     return patches, found, duration
 
 def main():

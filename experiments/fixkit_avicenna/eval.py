@@ -8,6 +8,9 @@ import tests4py.api as t4p
 from tests4py.projects import Project
 
 from fixkit.constants import DEFAULT_EXCLUDES
+from fixkit.fitness.engine import Tests4PyEngine, Tests4PySystemTestEngine
+from fixkit.fitness.metric import AbsoluteFitness
+from fixkit.repair.patch import get_patch
 from fixkit.localization.t4p import *
 from fixkit.repair import GeneticRepair
 from fixkit.repair.pygenprog import PyGenProg
@@ -70,18 +73,18 @@ SUBJECTS = {
         1: t4p.middle_1,
         2: t4p.middle_2,
     }, 
-    MiddleBenchmarkRepository),
+    MiddleBenchmarkRepository()),
 
     "MARKUP": ({
         1: t4p.markup_1,
         2: t4p.markup_2,
     }, 
-    MarkupBenchmarkRepository),
+    MarkupBenchmarkRepository()),
 
     "EXPRESSION": ({
         1: t4p.expression_1,
     }, 
-    ExpressionBenchmarkRepository),
+    ExpressionBenchmarkRepository()),
 
     "CALCULATOR": ({
         1: t4p.calculator_1,
@@ -93,20 +96,25 @@ SUBJECTS = {
         2: t4p.pysnooper_2,
         3: t4p.pysnooper_3,
     }, 
-    PysnooperBenchmarkRepository)
+    PysnooperBenchmarkRepository())
 }
+
+
+def almost_equal(value, target, delta=0.0001):
+    return abs(value - target) < delta
+
 
 def evaluate(
     approach: Type[GeneticRepair], 
     subject: Project,
-    bug_id: int,
+    harness_id: int,
     harness: BenchmarkRepository, 
     parameters: Dict[str, Any], 
     iterations: int
 ):
     
-    logger = logging.getLogger('tests4py')
-    logger.propagate = False
+    #logger = logging.getLogger('tests4py')
+    #logger.propagate = False
     start = time.time()
     
     default_param = {
@@ -116,10 +124,8 @@ def evaluate(
     report = t4p.checkout(subject)
     if report.raised:
         raise report.raised
-    
-    t4p.build()
 
-    harness_program = harness.build()[bug_id-1]
+    harness_program = harness.build()[harness_id]
     param = harness_program.to_dict()
     param.update(default_param)
 
@@ -127,10 +133,23 @@ def evaluate(
     generator = AvicennaTestGenerator(out=dir, saving_method="files", **param)
     generator.run()
 
-    failing_test_paths: List[os.PathLike] = TestGenerator.load_failing_test_paths(generator.out)[:10]
-    passing_test_paths: List[os.PathLike] = TestGenerator.load_passing_test_paths(generator.out)[:10]
+    failing_test_paths: List[os.PathLike] = TestGenerator.load_failing_test_paths(generator.out)
+    passing_test_paths: List[os.PathLike] = TestGenerator.load_passing_test_paths(generator.out)
 
     test_cases = failing_test_paths + passing_test_paths
+
+    # MANUAL ITERATION THROUGH AVICENNAS TEST CASES
+    #
+    #test_cases = [
+    #    os.path.abspath(
+    #        os.path.join(
+    #            "tmp",
+    #            str(subject.get_identifier()),
+    #            "avicenna_test_cases",
+    #            f"{status}_test_{i}",
+    #        )
+    #    ) for status in ["passing", "failing"] for i in range(10)
+    #]  
 
     print(test_cases)
 
@@ -155,7 +174,22 @@ def evaluate(
     )
     patches = approach.repair()
     duration = time.time() - start
-    return patches, duration
+
+    print("Starting evaluation engine.")
+
+    found = False
+    best_fitness = 0.0
+
+    engine = Tests4PySystemTestEngine(AbsoluteFitness(set(), set()), test_cases, workers=32, out="rep")
+    engine.evaluate(patches)
+    for patch in patches:
+        if almost_equal(patch.fitness, 1):
+            best_fitness = max(best_fitness, patch.fitness)
+            print(get_patch(patch))
+            found = True
+            break
+
+    return patches, found, duration, best_fitness
 
 
 def main():
@@ -163,12 +197,21 @@ def main():
     approach, parameters = approach
     subject_harness = SUBJECTS["CALCULATOR"]
     bug_id = 1
+    harness_id = 0
     subject_dict, harness = subject_harness
     subject = subject_dict[bug_id]
-    iterations = 3
-    pacthes, duration = evaluate(approach, subject, bug_id, harness, parameters, iterations)
+    iterations = 2
+    pacthes, found, duration, best_fitness = evaluate(approach, subject, harness_id, harness, parameters, iterations)
     with open(f"{approach.__name__}_{subject.get_identifier()}.txt", "w") as f:
-        f.write(f"{approach.__name__},{subject.get_identifier()},{duration}\nFITNESS:\n{pacthes}")
+        f.write(  
+f"""APPROACH: {approach.__name__},
+SUBJECT: {subject.get_identifier()},
+PATCH FOUND: {found},
+DURATION: {duration},
+BEST FITNESS: {best_fitness},
+PATCHES: {pacthes}
+"""
+        )
 
 if __name__ == "__main__":
     main()

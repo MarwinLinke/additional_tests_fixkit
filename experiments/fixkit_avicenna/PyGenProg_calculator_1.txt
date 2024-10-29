@@ -1,0 +1,6 @@
+APPROACH: PyGenProg,
+SUBJECT: calculator_1,
+PATCH FOUND: False,
+DURATION: 328.9560923576355,
+BEST FITNESS: 0.0,
+PATCHES: [GeneticCandidate@tmp/calculator_1(2)[0.40], GeneticCandidate@tmp/calculator_1(3)[0.40], GeneticCandidate@tmp/calculator_1(1)[0.40], GeneticCandidate@tmp/calculator_1(2)[0.40], GeneticCandidate@tmp/calculator_1(0)[0.40]]
