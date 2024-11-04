@@ -119,6 +119,7 @@ def evaluate(
     
     default_param = {
         "max_iterations": 5,
+        "overwrite": True
     }
 
     report = t4p.checkout(subject)
@@ -132,6 +133,7 @@ def evaluate(
     dir = os.path.abspath(Path("tmp") / subject.get_identifier())
     generator = AvicennaTestGenerator(out=dir, saving_method="files", **param)
     generator.run()
+    generator.generate_more_inputs(100)
 
     failing_test_paths: List[os.PathLike] = TestGenerator.load_failing_test_paths(generator.out)
     passing_test_paths: List[os.PathLike] = TestGenerator.load_passing_test_paths(generator.out)
