@@ -1,0 +1,868 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+The repair ran for 0.8798 seconds.
+The repair ran for 216.9153 seconds.
+The evaluation took 176.3952 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.0
+Found a total of 32 patches.
+
+PATCHES:
+GeneticCandidate@tmp/middle_1(7)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+-    if stderr is not None:
+-        sys.stderr = stderr
++    pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(8)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+-    if stderr is not None:
+-        sys.stderr = stderr
++    pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,14 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
++        args = args or sys.argv[1:]
+         sys.stdout = stdout
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(9)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,11 +3,15 @@
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            if x < y:
++                m = y
++            elif x < z:
++                m = y
++            if x < z:
++                m = y
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+ 
+-
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+-    if stdout is not None:
+-        sys.stdout = stdout
++    pass
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(9)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,11 +3,10 @@
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(7)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,10 +4,13 @@
+         if x < y:
+             m = y
+         elif x < z:
++            if x < y:
++                m = y
++            elif x < z:
++                m = y
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,13 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+     if stderr is not None:
+-        sys.stderr = stderr
++        pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(10)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,6 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++import sys
+
+GeneticCandidate@tmp/middle_1(12)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,11 +3,10 @@
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(11)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,13 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+     if stderr is not None:
+-        sys.stderr = stderr
++        pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,10 +4,9 @@
+         if x < y:
+             m = y
+         elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++            pass
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(11)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [37/50]
+NOW FAILING: [13/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.37
+--------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,11 +3,13 @@
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            if x < z:
++                m = y
++            if x > z:
++                m = x
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(5)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [25/50]
+NOW FAILING: [25/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.25
+--------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,4 @@
+ def middle(x, y, z):
+     m = z
+-    if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    pass
++    return m
+
+GeneticCandidate@tmp/middle_1(6)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(7)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,6 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++pass
+
+GeneticCandidate@tmp/middle_1(11)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(11)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+-    if stderr is not None:
+-        sys.stderr = stderr
++    pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(7)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,12 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    if x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(8)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    pass
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(11)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,14 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
++        args = args or sys.argv[1:]
+         sys.stdout = stdout
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(9)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,10 +4,9 @@
+         if x < y:
+             m = y
+         elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++            pass
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(11)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(10)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,13 @@
+ import sys
+-
+ import middle
+ 
+-
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+-    if stdout is not None:
+-        sys.stdout = stdout
++    if stderr is not None:
++        sys.stderr = stderr
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(9)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,13 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+     if stderr is not None:
+-        sys.stderr = stderr
++        pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(6)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+ 
+-
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+-    if stdout is not None:
+-        sys.stdout = stdout
++    pass
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(13)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(9)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(8)[0.00]None
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+-    if stderr is not None:
+-        sys.stderr = stderr
++    pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+GeneticCandidate@tmp/middle_1(10)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+GeneticCandidate@tmp/middle_1(9)[0.00]None
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,12 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    if x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+

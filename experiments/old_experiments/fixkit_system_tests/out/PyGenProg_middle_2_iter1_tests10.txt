@@ -1,0 +1,10 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+The repair ran for 12.9557 seconds.
+The evaluation took 0.4030 seconds.
+Was a valid patch found: True
+BEST FITNESS: 1
+
+PATCHES:
+GeneticCandidate@tmp/middle_2(0)[1.00]
+

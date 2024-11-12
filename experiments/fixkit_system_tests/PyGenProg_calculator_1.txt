@@ -1,3 +1,0 @@
-PyGenProg,calculator_1,False,110.39148235321045
-FITNESS:
-[GeneticCandidate@tmp/calculator_1(2)[0.09], GeneticCandidate@tmp/calculator_1(3)[0.09], GeneticCandidate@tmp/calculator_1(3)[0.09], GeneticCandidate@tmp/calculator_1(4)[0.09], GeneticCandidate@tmp/calculator_1(0)[0.09]]

@@ -1,0 +1,41 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+The repair ran for 0.9132 seconds.
+The repair ran for 43.7066 seconds.
+The evaluation took 12.6769 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.0
+Found a total of 1 patches.
+
+PATCHES:
+GeneticCandidate@tmp/middle_2(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [39/50]
+NOW FAILING: [11/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.819672131147541
+RECALL: 1.0
+ACCURACY: 0.89
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,10 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
++        else:
+             return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+

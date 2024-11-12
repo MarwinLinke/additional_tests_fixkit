@@ -1,0 +1,45 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+The repair ran for 0.7436 seconds.
+The repair ran for 146.7502 seconds.
+The evaluation took 20.2801 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.0
+Found a total of 1 patches.
+
+PATCHES:
+GeneticCandidate@tmp/middle_1(4)[0.00]
+---------- Confusion Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+--------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,13 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+-        sys.stdout = stdout
++        pass
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+

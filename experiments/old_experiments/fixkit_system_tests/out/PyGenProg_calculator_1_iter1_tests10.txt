@@ -1,0 +1,94 @@
+APPROACH: PyGenProg
+SUBJECT: calculator_1
+The repair ran for 50.3362 seconds.
+The evaluation took 1.4353 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.0
+
+PATCHES:
+GeneticCandidate@tmp/calculator_1(2)[0.00]
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,13 +1,11 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+ """
+ from math import cos as rcos
+ from math import sin as rsin
++"""Computes the square root of x, using the Newton-Raphson method"""
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +17,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+GeneticCandidate@tmp/calculator_1(0)[0.00]
+Patch couldn't be printed.GeneticCandidate@tmp/calculator_1(1)[0.00]
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,13 +1,20 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+ """
+ from math import cos as rcos
++
++def sqrt(x):
++    """Computes the square root of x, using the Newton-Raphson method"""
++    x = max(x, 0)
++    approx = None
++    guess = x / 2
++    while approx != guess:
++        approx = guess
++        guess = (approx + x / approx) / 2
++    return approx
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +26,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
