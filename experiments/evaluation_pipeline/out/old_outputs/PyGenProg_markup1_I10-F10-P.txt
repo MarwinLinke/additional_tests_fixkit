@@ -1,0 +1,87 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+The repair ran for 1.5682 seconds.
+The repair ran for 122.4066 seconds.
+The evaluation took 5.0930 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.0
+Found a total of 2 patches.
+
+PATCHES:
+GeneticCandidate@tmp/markup_1(6)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [9/33]
+STILL FAILING: [24/33]
+PRECISION: 1.0
+RECALL: 0.2727272727272727
+ACCURACY: 0.7108433734939759
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,20 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+     return out
++    if c == '>' and (not quote):
++        tag = False
++    elif c == '"' or (c == "'" and tag):
++        quote = not quote
++    elif not tag:
++        out = out + c
+
+GeneticCandidate@tmp/markup_1(8)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [16/33]
+STILL FAILING: [17/33]
+PRECISION: 1.0
+RECALL: 0.48484848484848486
+ACCURACY: 0.7951807228915663
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,16 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
++            if not tag:
++                out = out + c
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+

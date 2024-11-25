@@ -56,6 +56,11 @@ class RepairEvaluationMatrix():
             self.accuracy = (self.len_still_passing + self.len_now_passing) / self.len_total
         else:
             self.accuracy = 0.0
+
+        if self.precision == 0.0 or self.recall == 0.0:
+            self.f1_score = 0.0
+        else:
+            self.f1_score = 2 * self.precision * self.recall / (self.precision + self.recall)
     
     def __str__(self):
         string = "\n---------- Evaluation Matrix ----------\n"
@@ -66,6 +71,7 @@ class RepairEvaluationMatrix():
         string += f"PRECISION: {self.precision}\n"
         string += f"RECALL: {self.recall}\n"
         string += f"ACCURACY: {self.accuracy}\n"
+        string += f"F1 SCORE: {self.f1_score}\n"
         string += f"---------------------------------------"
         return string
 

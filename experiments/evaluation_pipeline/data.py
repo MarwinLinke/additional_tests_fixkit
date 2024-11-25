@@ -3,6 +3,7 @@ from debugging_benchmark.middle.middle import MiddleBenchmarkRepository
 from debugging_benchmark.markup.markup import MarkupBenchmarkRepository
 from debugging_benchmark.expression.expression import ExpressionBenchmarkRepository
 from debugging_benchmark.tests4py_benchmark.repository import PysnooperBenchmarkRepository
+from debugging_benchmark.tests4py_benchmark.repository import CookiecutterBenchmarkRepository
 from debugging_framework.benchmark.repository import BenchmarkProgram
 
 from fixkit.repair.pygenprog import PyGenProg
@@ -79,6 +80,97 @@ SUBJECTS: Dict[str, Dict[int, Tuple[Project, Callable[[], BenchmarkProgram]]]] =
         2: (t4p.pysnooper_2, lambda: PysnooperBenchmarkRepository().build()[0]),
         3: (t4p.pysnooper_3, lambda: PysnooperBenchmarkRepository().build()[1]),
     },
+
+    "COOKIECUTTER": {
+        1: (t4p.cookiecutter_1, lambda: None),
+        2: (t4p.cookiecutter_2, lambda: CookiecutterBenchmarkRepository().build()[0]),
+        3: (t4p.cookiecutter_3, lambda: CookiecutterBenchmarkRepository().build()[1]),
+        4: (t4p.cookiecutter_4, lambda: CookiecutterBenchmarkRepository().build()[2]),
+    },
+}
+
+
+SUBJECT_PARAMS = {
+    "MIDDLE_1": {
+        "SUBJECT": "MIDDLE",
+        "BUG_ID": 1,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50],
+        "NEGATED_FORMULA": True
+    },
+
+    "MIDDLE_2": {
+        "SUBJECT": "MIDDLE",
+        "BUG_ID": 2,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50],
+        "NEGATED_FORMULA": True
+    },
+
+    "MARKUP_1": {
+        "SUBJECT": "MARKUP",
+        "BUG_ID": 1,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": False
+    },
+
+    "MARKUP_2": {
+        "SUBJECT": "MARKUP",
+        "BUG_ID": 2,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": False
+    },
+
+    "EXPRESSION_1": {
+        "SUBJECT": "EXPRESSION",
+        "BUG_ID": 1,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": False
+    }, 
+
+    "CALCULATOR_1": {
+        "SUBJECT": "CALCULATOR",
+        "BUG_ID": 1,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": True
+    }, 
+
+    "PYSNOOPER_2": {
+        "SUBJECT": "PYSNOOPER",
+        "BUG_ID": 2,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": True
+    },
+
+    
+    "PYSNOOPER_3": {
+        "SUBJECT": "PYSNOOPER",
+        "BUG_ID": 3,
+        "ITERATIONS": [3, 10],
+        "TESTS4PY_TEST_CASES": [1, 10],
+        "AVICENNA_TEST_CASES": [50, 250],
+        "NEGATED_FORMULA": True
+    },
+}
+
+
+VARIANTS = {
+    "BASELINE": "TESTS4PY_TEST_CASES", 
+    "FAULT_LOCALIZATION": "AVICENNA_TEST_CASES", 
+    "VALIDATION": "AVICENNA_TEST_CASES", 
+    "COMPLETE" : "AVICENNA_TEST_CASES"
 }
 
 def get_evaluation_data(

@@ -1,0 +1,173 @@
+APPROACH: PyGenProg
+SUBJECT: pysnooper_3
+The repair ran for 0.8283 seconds.
+The repair ran for 153.7202 seconds.
+The evaluation took 33.2155 seconds.
+Was a valid patch found: True
+BEST FITNESS: 1
+Found a total of 1 patches.
+
+PATCHES:
+GeneticCandidate@tmp/pysnooper_3(2)[1.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 1.0
+RECALL: 1.0
+ACCURACY: 1.0
+---------------------------------------
+--- pysnooper/tracer.py
++++ pysnooper/tracer.py
+@@ -1,12 +1,8 @@
+-# Copyright 2019 Ram Rachum.
+-# This program is distributed under the MIT license.
+-
+ import types
+ import sys
+ import re
+ import collections
+ import datetime as datetime_module
+-
+ import six
+ 
+ def get_shortish_repr(item):
+@@ -37,10 +33,9 @@
+         except Exception:
+             continue
+     return result
+-
+-
+ source_cache_by_module_name = {}
+ source_cache_by_file_name = {}
++
+ def get_source_from_frame(frame):
+     module_name = frame.f_globals.get('__name__') or ''
+     if module_name:
+@@ -56,7 +51,6 @@
+             pass
+     function = frame.f_code.co_name
+     loader = frame.f_globals.get('__loader__')
+-
+     source = None
+     if hasattr(loader, 'get_source'):
+         try:
+@@ -73,22 +67,14 @@
+             pass
+     if source is None:
+         raise NotImplementedError
+-
+-    # If we just read the source from a file, or if the loader did not
+-    # apply tokenize.detect_encoding to decode the source into a
+-    # string, then we should do that ourselves.
+     if isinstance(source[0], bytes):
+         encoding = 'ascii'
+         for line in source[:2]:
+-            # File coding may be specified. Match pattern from PEP-263
+-            # (https://www.python.org/dev/peps/pep-0263/)
+-            match = re.search(br'coding[:=]\s*([-\w.]+)', line)
++            match = re.search(b'coding[:=]\\s*([-\\w.]+)', line)
+             if match:
+                 encoding = match.group(1).decode('ascii')
+                 break
+-        source = [six.text_type(sline, encoding, 'replace') for sline in
+-                  source]
+-
++        source = [six.text_type(sline, encoding, 'replace') for sline in source]
+     if module_name:
+         source_cache_by_module_name[module_name] = source
+     if file_name:
+@@ -96,8 +82,8 @@
+     return source
+ 
+ class Tracer:
+-    def __init__(self, target_code_object, write, variables=(), depth=1,
+-                 prefix=''):
++
++    def __init__(self, target_code_object, write, variables=(), depth=1, prefix=''):
+         self.target_code_object = target_code_object
+         self._write = write
+         self.variables = variables
+@@ -109,9 +95,9 @@
+ 
+     def write(self, s):
+         s = '{self.prefix}{s}\n'.format(**locals())
+-        if isinstance(s, bytes): # Python 2 compatibility
++        if isinstance(s, bytes):
+             s = s.decode()
+-        self._write(s)
++        pass
+ 
+     def __enter__(self):
+         self.original_trace_function = sys.gettrace()
+@@ -120,20 +106,9 @@
+     def __exit__(self, exc_type, exc_value, exc_traceback):
+         sys.settrace(self.original_trace_function)
+ 
+-
+     def trace(self, frame, event, arg):
+-
+-        ### Checking whether we should trace this line: #######################
+-        #                                                                     #
+-        # We should trace this line either if it's in the decorated function,
+-        # or the user asked to go a few levels deeper and we're within that
+-        # number of levels deeper.
+-
+         if frame.f_code is not self.target_code_object:
+             if self.depth == 1:
+-                # We did the most common and quickest check above, because the
+-                # trace function runs so incredibly often, therefore it's
+-                # crucial to hyper-optimize it for the common case.
+                 return self.trace
+             else:
+                 _frame_candidate = frame
+@@ -148,40 +123,21 @@
+                     return self.trace
+         else:
+             indent = ''
+-        #                                                                     #
+-        ### Finished checking whether we should trace this line. ##############
+-
+-        ### Reporting newish and modified variables: ##########################
+-        #                                                                     #
+-        self.frame_to_old_local_reprs[frame] = old_local_reprs = \
+-                                               self.frame_to_local_reprs[frame]
+-        self.frame_to_local_reprs[frame] = local_reprs = \
+-                               get_local_reprs(frame, variables=self.variables)
+-
++        self.frame_to_old_local_reprs[frame] = old_local_reprs = self.frame_to_local_reprs[frame]
++        self.frame_to_local_reprs[frame] = local_reprs = get_local_reprs(frame, variables=self.variables)
+         modified_local_reprs = {}
+         newish_local_reprs = {}
+-
+         for key, value in local_reprs.items():
+             if key not in old_local_reprs:
+                 newish_local_reprs[key] = value
+             elif old_local_reprs[key] != value:
+                 modified_local_reprs[key] = value
+-
+-        newish_string = ('Starting var:.. ' if event == 'call' else
+-                                                            'New var:....... ')
++        newish_string = 'Starting var:.. ' if event == 'call' else 'New var:....... '
+         for name, value_repr in newish_local_reprs.items():
+-            self.write('{indent}{newish_string}{name} = {value_repr}'.format(
+-                                                                   **locals()))
++            self.write('{indent}{newish_string}{name} = {value_repr}'.format(**locals()))
+         for name, value_repr in modified_local_reprs.items():
+-            self.write('{indent}Modified var:.. {name} = {value_repr}'.format(
+-                                                                   **locals()))
+-        #                                                                     #
+-        ### Finished newish and modified variables. ###########################
+-
++            self.write('{indent}Modified var:.. {name} = {value_repr}'.format(**locals()))
+         now_string = datetime_module.datetime.now().time().isoformat()
+         source_line = get_source_from_frame(frame)[frame.f_lineno - 1]
+-        self.write('{indent}{now_string} {event:9} '
+-                   '{frame.f_lineno:4} {source_line}'.format(**locals()))
+-        return self.trace
+-
+-
++        self.write('{indent}{now_string} {event:9} {frame.f_lineno:4} {source_line}'.format(**locals()))
++        return self.trace
+

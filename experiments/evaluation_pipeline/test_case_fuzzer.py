@@ -1,13 +1,6 @@
 from isla.fuzzer import GrammarFuzzer
-import tests4py.api as t4p
 from fixkit.constants import DEFAULT_WORK_DIR
-from debugging_framework.benchmark.repository import BenchmarkRepository
 from debugging_framework.benchmark.repository import BenchmarkProgram
-from debugging_benchmark.calculator.calculator import CalculatorBenchmarkRepository
-from debugging_benchmark.middle.middle import MiddleBenchmarkRepository
-from debugging_benchmark.markup.markup import MarkupBenchmarkRepository
-from debugging_benchmark.expression.expression import ExpressionBenchmarkRepository
-from debugging_benchmark.tests4py_benchmark.repository import PysnooperBenchmarkRepository
 from debugging_framework.input.oracle import OracleResult
 from typing import List, Tuple, Optional
 from pathlib import Path
@@ -42,13 +35,19 @@ class Tests4PyFuzzer():
         oracle = self.benchmark_program.get_oracle()
 
         fuzzer = GrammarFuzzer(grammar)
+        iteration = 0
 
-        for _ in range(1000):
+        while iteration < 10000:
 
             inp = fuzzer.fuzz()
             oracle_result, _ = oracle(inp)
+            iteration += 1
 
-            if oracle_result == OracleResult.FAILING:
+            if iteration % 10 == 0:
+                print(f"Found {len(failing_inputs)} failing and {len(passing_inputs)} passing inputs in {iteration} iterations")
+
+
+            if oracle_result == OracleResult.FAILING and inp not in failing_inputs:
 
                 if failing_count >= num_failing:
                     continue
@@ -56,7 +55,7 @@ class Tests4PyFuzzer():
                 failing_inputs.append(inp)
                 failing_count += 1
 
-            elif oracle_result == OracleResult.PASSING:
+            elif oracle_result == OracleResult.PASSING and inp not in passing_inputs:
 
                 if passing_count >= num_passing:
                     continue
@@ -68,7 +67,10 @@ class Tests4PyFuzzer():
                 break
         
 
-        print(f"Failing: {len(failing_inputs)}, passing: {len(passing_inputs)}")
+        passing_inputs = list(set(passing_inputs))
+        failing_inputs = list(set(failing_inputs))
+
+        print(f"Failing: {len(failing_inputs)}, passing: {len(passing_inputs)} in {iteration} iterations")
 
         self.passing = passing_inputs
         self.failing = failing_inputs
@@ -130,6 +132,18 @@ class Tests4PyFuzzer():
             return []
 
 
+
+def main():
+    from data import get_evaluation_data
+    from tests4py.logger import LOGGER
+    LOGGER.propagate = False
+    setup = get_evaluation_data("GENPROG", "COOKIECUTTER", 4)
+    approach, parameters, subject, benchmark_program = setup
+    fuzzer = Tests4PyFuzzer(benchmark_program, out=DEFAULT_WORK_DIR / "test_cases_fuzzer")
+    fuzzer.generate_test_cases(250, 250)
+
+if __name__ == "__main__":
+    main()
 
 
 
