@@ -1,0 +1,2 @@
+exists <operator> elem in start:
+  (= elem " / ")

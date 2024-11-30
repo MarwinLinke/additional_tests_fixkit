@@ -1,0 +1,4 @@
+approach,subject,bug_id,iterations,engine,variant,failing_avicenna,passing_avicenna,failing_tests4py,passing_tests4py,fault_localization_tests,validation_tests,test_collection_duration,repair_duration,evaluation_duration,best_fitness,precision,recall,f1_score,accuracy,patches
+PyGenProg,middle,1,3,sequential,B,0,0,1,10,11,11,0.6500520706176758,115.301353931427,17.84246826171875,1.0,1.0,1.0,1.0,1.0,1
+PyGenProg,middle,1,3,sequential,B,0,0,1,10,11,11,0.6798844337463379,113.07764410972595,17.174151182174683,1.0,1.0,1.0,1.0,1.0,1
+PyGenProg,middle,1,3,sequential,B,0,0,1,10,11,11,0.6496098041534424,111.22041988372803,16.85159468650818,1.0,1.0,1.0,1.0,1.0,1

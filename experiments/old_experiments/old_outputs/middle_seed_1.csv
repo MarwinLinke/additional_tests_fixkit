@@ -1,0 +1,4 @@
+approach,subject,bug_id,iterations,engine,variant,additional_failing,additional_passing,baseline_failing,baseline_passing,fault_localization_tests,validation_tests,test_collection_duration,repair_duration,evaluation_duration,best_fitness,precision,recall,f1_score,accuracy,patches
+PyGenProg,middle,2,1,sequential,B,0,0,1,10,11,11,0.6071646213531494,50.578094482421875,14.04259204864502,1.0,1.0,1.0,1.0,1.0,1
+PyGenProg,middle,2,1,sequential,B,0,0,1,10,11,11,0.6470646858215332,52.00638175010681,13.736952543258667,1.0,1.0,1.0,1.0,1.0,1
+PyGenProg,calculator,1,1,sequential,B,0,0,1,10,11,11,0.798973798751831,83.29229044914246,20.603242874145508,0.09090909090909091,0.0,0.0,0.0,0.5,4

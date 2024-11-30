@@ -1,0 +1,2 @@
+exists <maybe_minus> elem in start:
+  (= elem "-")

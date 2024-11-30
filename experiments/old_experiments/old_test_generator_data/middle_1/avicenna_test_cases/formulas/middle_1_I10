@@ -1,0 +1,6 @@
+(forall <z> elem_1 in start:
+   exists <x> elem_2 in start:
+     (> (str.to.int elem_1) (str.to.int elem_2)) and
+forall <x> elem_0 in start:
+  exists <y> elem_3 in start:
+    (> (str.to.int elem_0) (str.to.int elem_3)))

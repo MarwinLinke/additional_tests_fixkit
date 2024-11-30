@@ -94,83 +94,83 @@ SUBJECT_PARAMS = {
     "MIDDLE_1": {
         "SUBJECT": "MIDDLE",
         "BUG_ID": 1,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50],
-        "NEGATED_FORMULA": True
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
     "MIDDLE_2": {
         "SUBJECT": "MIDDLE",
         "BUG_ID": 2,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50],
-        "NEGATED_FORMULA": True
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
     "MARKUP_1": {
         "SUBJECT": "MARKUP",
         "BUG_ID": 1,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": False
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
     "MARKUP_2": {
         "SUBJECT": "MARKUP",
         "BUG_ID": 2,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": False
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
     "EXPRESSION_1": {
         "SUBJECT": "EXPRESSION",
         "BUG_ID": 1,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": False
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     }, 
 
     "CALCULATOR_1": {
         "SUBJECT": "CALCULATOR",
         "BUG_ID": 1,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": True
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     }, 
 
     "PYSNOOPER_2": {
         "SUBJECT": "PYSNOOPER",
         "BUG_ID": 2,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": True
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
     
     "PYSNOOPER_3": {
         "SUBJECT": "PYSNOOPER",
         "BUG_ID": 3,
-        "ITERATIONS": [3, 10],
-        "TESTS4PY_TEST_CASES": [1, 10],
-        "AVICENNA_TEST_CASES": [50, 250],
-        "NEGATED_FORMULA": True
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
+    },
+
+    "COOKIECUTTER_3": {
+        "SUBJECT": "COOKIECUTTER",
+        "BUG_ID": 3,
+        "ITERATIONS": [1, 10],
+        "NUM_BASELINE_TESTS": [(1, 10)],
+        "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 }
 
 
 VARIANTS = {
-    "BASELINE": "TESTS4PY_TEST_CASES", 
-    "FAULT_LOCALIZATION": "AVICENNA_TEST_CASES", 
-    "VALIDATION": "AVICENNA_TEST_CASES", 
-    "COMPLETE" : "AVICENNA_TEST_CASES"
+    "BASELINE": "NUM_BASELINE_TESTS", 
+    "FAULT_LOCALIZATION": "NUM_ADDITIONAL_TESTS", 
+    "VALIDATION": "NUM_ADDITIONAL_TESTS", 
+    "COMPLETE" : "NUM_ADDITIONAL_TESTS"
 }
 
 def get_evaluation_data(

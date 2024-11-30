@@ -1,0 +1,2 @@
+exists <chars> elem_xy in start:
+  inside(elem_xy, start)

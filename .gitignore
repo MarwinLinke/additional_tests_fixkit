@@ -2,3 +2,4 @@ venv/
 tmp/
 sflkit_events/
 rep/
+__pycache__/
