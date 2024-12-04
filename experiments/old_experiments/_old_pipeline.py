@@ -31,6 +31,10 @@ from debugging_framework.benchmark.repository import BenchmarkProgram
 from repair_evaluation_matrix import RepairEvaluationMatrix
 from data import almost_equal
 
+class TestGenerationType(Enum):
+    AVICENNA = 0
+    GRAMMAR_FUZZER = 1
+
 class EvaluationPipeline():
 
     def __init__(
@@ -38,18 +42,20 @@ class EvaluationPipeline():
         approach: Type[GeneticRepair], 
         parameters: Dict[str, Any], 
         subject: Project,
+        benchmark_program: BenchmarkProgram,
         repair_iterations: int,
         seed: int,
-        repair_tests_path: str,
-        evaluation_tests_path: str,
+        test_generation_type: TestGenerationType = TestGenerationType.GRAMMAR_FUZZER,
         num_baseline_failing: int = 1,
         num_baseline_passing: int = 10,
         num_additional_failing: int = 50,
         num_additional_passing: int = 50,
         num_evaluation_failing: int = 50,
-        num_evaluation_passing: int = 50,        
+        num_evaluation_passing: int = 50,
+        lock_evaluation_tests: bool = False,
         enhance_fault_localization: bool = False,
         enhance_validation: bool = False,
+        use_cached_tests: bool = True,
         use_parallel_engine: bool = False
     ):
         """
@@ -57,23 +63,25 @@ class EvaluationPipeline():
         :param Project subject: The tests4py subject.
         :param int repair_iterations: The number of iterations the repair will run for.
         :param int seed: The seed used for random and numpy.random.
+        :param TestGenerationType test_generation_type: The type of additional test case generation. Use AVICENNA or GRAMMAR_FUZZER.
         :param int num_baseline_failing: The number of failing test cases used for the baseline.
         :param int num_baseline_passing: The number of passing test cases used for the baseline.
         :param int num_additional_failing: The number of additional failing test cases used.
         :param int num_additional_passing: The number of additional passing test cases used.
         :param int num_evaluation_failing: The number of failing test cases used for evaluating the quality of patches.
         :param int num_evaluation_passing: The number of passing test cases used for evaluating the quality of patches.
+        :param bool lock_evaluation_tests: If this is true, no evaluation test cases are generated. Useful for evaluating multiple runs on the same test cases.
         :param bool enhance_fault_localization: If this is true, additional test cases will be used in the fault localization.
         :param bool enhance_validation: If this is true, additional test cases will be used in the validation.
+        :param bool use_cached_tests: If this is true, no additional test cases are generated if they already exist.
         :param bool use_parallel_engine: Uses either the parallel or sequential engine for evaluating the patches.
         """
         self.approach: Type[GeneticRepair] = approach
         self.parameters: Dict[str, Any] = parameters
         self.subject: Project = subject
+        self.benchmark_program: BenchmarkProgram = benchmark_program
         self.fixKit_iterations = repair_iterations
-
-        self.repair_tests_path = repair_tests_path
-        self.evaluation_tests_path = evaluation_tests_path
+        self.test_generation_type = test_generation_type
 
         self.num_baseline_failing = num_baseline_failing
         self.num_baseline_passing = num_baseline_passing
@@ -82,8 +90,10 @@ class EvaluationPipeline():
         self.num_evaluation_failing = num_evaluation_failing
         self.num_evaluation_passing = num_evaluation_passing
 
+        self.lock_evaluation_test_cases = lock_evaluation_tests
         self.enhance_fault_localization = enhance_fault_localization
         self.enhance_validation = enhance_validation
+        self.use_cached_tests = use_cached_tests
         self.use_parallel_engine = use_parallel_engine
 
         self.repair_additional_failing: List[str] = []
@@ -96,6 +106,7 @@ class EvaluationPipeline():
         self.evaluation_passing: List[str] = []
 
         self.seed = seed
+        self._set_seed()
         self.patches: List[GeneticCandidate] = []
         self.patch_matrices: Dict[GeneticCandidate, RepairEvaluationMatrix] = {}
         self.found: bool = False
@@ -129,14 +140,15 @@ class EvaluationPipeline():
         """
         Collects test cases based on parameters.
         """
-        report = t4p.checkout(self.subject)
-        if report.raised:
-            raise report.raised
-
         if not self.enhance_fault_localization or not self.enhance_validation:
             self._collect_tests4py_tests()
         if self.enhance_fault_localization or self.enhance_validation:
-            self._collect_fuzzer_tests()
+            if self.test_generation_type == TestGenerationType.AVICENNA:
+                self._collect_avicenna_tests()
+            elif self.test_generation_type == TestGenerationType.GRAMMAR_FUZZER:
+                self._collect_fuzzer_tests()
+            else:
+                raise ValueError("Test generation type not registered.")
 
         self.collection_duration = time.time() - self.start_time
         LOGGER.info(f"Evaluation pipeline collected \
@@ -148,6 +160,10 @@ class EvaluationPipeline():
         """
         Collects test cases from tests4py for baseline.
         """
+        report = t4p.checkout(self.subject)
+        if report.raised:
+            raise report.raised
+
         systemtests_path = os.path.join("tmp", self.subject.get_identifier(), "tests4py_systemtest_diversity")
 
         self.repair_baseline_failing = [
@@ -160,12 +176,104 @@ class EvaluationPipeline():
             for i in range(self.num_baseline_passing)
         ]
 
+    def _collect_avicenna_tests(self):
+        """
+        Collects test cases, genereated through avicenna.
+        """
+        report = t4p.checkout(self.subject)
+        if report.raised:
+            raise report.raised
+
+        dir = os.path.abspath(Path("test_generator") / self.subject.get_identifier())
+        saving_path = Path(dir) / "avicenna_test_cases" / f"test_cases_{self.num_additional_failing}"
+        if not (self.use_cached_tests and saving_path.exists()):
+            self._generate_avicenna_tests(dir, saving_path)
+
+        self.repair_additional_failing = TestGenerator.load_failing_test_paths(saving_path)
+        self.repair_additional_passing = TestGenerator.load_passing_test_paths(saving_path)
+
+    def _generate_avicenna_tests(self, dir: Path, saving_path: Path):
+        """
+        Generates test cases through avicenna.
+        """
+        identifier: str = f"{self.subject.get_identifier()}_I{str(10)}"
+        
+        default_param = {
+            "max_iterations": 10,
+            "saving_method": "files",
+            "out": dir,
+            "identifier": identifier,
+            "save_automatically": False
+        }
+
+        param = self.benchmark_program.to_dict()
+        param.update(default_param)
+
+        generator = AvicennaTestGenerator(**param)
+
+        formula = generator.load_formula(identifier)
+        if not formula:
+            generator.run(False)
+
+        generator.solve_formula(
+            max_iterations=self.num_additional_failing,
+            negate_formula=False,
+            only_unique_inputs=True,
+            formula=formula
+        )
+      
+        if self.num_additional_passing > 0:
+            generator.solve_formula(
+                max_iterations=self.num_additional_passing,
+                negate_formula=True,
+                only_unique_inputs=True,
+                formula=formula
+            )
+
+        if saving_path.exists():
+            shutil.rmtree(saving_path)
+
+        generator.save_test_cases(saving_path)
+
     def _collect_fuzzer_tests(self):
         """
         Collect test cases, generated through a grammar based fuzzer.
         """
-        self.repair_additional_failing = TestGenerator.load_failing_test_paths(self.repair_tests_path, self.num_additional_failing)
-        self.repair_additional_passing = TestGenerator.load_passing_test_paths(self.repair_tests_path, self.num_additional_passing)
+
+        LOGGER.info(f"Evaluation pipeline generates random number for seed verification: {random.randint(0, 1000)}.")
+
+        report = t4p.checkout(self.subject)
+        if report.raised:
+            raise report.raised
+
+        dir = os.path.abspath(Path("test_generator") / self.subject.get_identifier())
+        saving_path = Path(dir) / "fuzzer_test_cases" / f"test_cases_{self.num_additional_failing}"
+        if not (self.use_cached_tests and saving_path.exists()):
+            self._generate_fuzzer_tests(dir, saving_path)
+
+        self.repair_additional_failing = TestGenerator.load_failing_test_paths(saving_path)
+        self.repair_additional_passing = TestGenerator.load_passing_test_paths(saving_path)
+
+    def _generate_fuzzer_tests(self, dir: Path, saving_path: Path):
+        """
+        Generates test cases through a grammar based fuzzer.
+        """
+        generator = GrammarFuzzerTestGenerator(
+            oracle = self.benchmark_program.get_oracle(),
+            grammar = self.benchmark_program.get_grammar(),
+            num_failing = self.num_additional_failing,
+            num_passing = self.num_additional_passing,
+            out = dir,
+            saving_method = "files",
+            save_automatically = False
+        )
+
+        generator.run()
+
+        if saving_path.exists():
+            shutil.rmtree(saving_path)
+
+        generator.save_test_cases(saving_path)
 
     def _repair(self):
         """
@@ -180,6 +288,8 @@ class EvaluationPipeline():
         params = self.parameters
         if self.approach != PyAE:
             params["max_generations"] = self.fixKit_iterations
+
+        LOGGER.info(f"Evaluation pipeline generates random number for seed verification: {random.randint(0, 1000)}.")
 
         approach = self.approach.from_source(
             src=Path("tmp", self.subject.get_identifier()),
@@ -199,10 +309,7 @@ class EvaluationPipeline():
             **params
         )
 
-        self._set_seed()
         self.patches: List[GeneticCandidate] = approach.repair()
-
-        LOGGER.info(f"Evaluation pipeline generates random number for seed verification: {random.randint(0, 1000)}, {np.random.randint(0, 1000)}.")
 
         self.repair_duration = time.time() - self.start_time - self.collection_duration
         LOGGER.info(f"Evaluation pipeline finished repair with {len(self.patches)} patches.")
@@ -211,8 +318,21 @@ class EvaluationPipeline():
         """
         Evaluates the patches, generated after the repair, with custom metric
         """      
-        self.evaluation_failing = TestGenerator.load_failing_test_paths(self.evaluation_tests_path, self.num_evaluation_failing)
-        self.evaluation_passing = TestGenerator.load_passing_test_paths(self.evaluation_tests_path, self.num_evaluation_passing)
+        dir = Path("evaluation_test_cases")
+        fuzzer = GrammarFuzzerTestGenerator(
+            oracle = self.benchmark_program.get_oracle(),
+            grammar = self.benchmark_program.get_grammar(),
+            num_failing = self.num_evaluation_failing,
+            num_passing = self.num_evaluation_passing,
+            out = dir,
+            saving_method = "files"
+        )
+
+        if not self.lock_evaluation_test_cases:
+            fuzzer.run()
+
+        self.evaluation_passing = TestGenerator.load_passing_test_paths(fuzzer.saving_path)
+        self.evaluation_failing = TestGenerator.load_failing_test_paths(fuzzer.saving_path)
         evaluation_tests = self.evaluation_passing + self.evaluation_failing
 
         LOGGER.info(f"Evaluation pipeline loaded {len(self.evaluation_failing)} failing and {len(self.evaluation_passing)} passing test cases for evaluation.")
@@ -297,17 +417,6 @@ class EvaluationPipeline():
 
         self.output = output
 
-    def write_report(self, path: os.PathLike):
-        variant = "C" if self.enhance_fault_localization and self.enhance_validation else "F" if self.enhance_fault_localization else "V" if self.enhance_validation else "B"
-        tests_identifier_avicenna = f"A{self.num_additional_failing}" if variant != "B" else ""
-        tests_identifier_tests4py = f"T{self.num_baseline_failing}" if variant != "C" else ""
-        engine_identifier = "P" if self.use_parallel_engine else "S"
-        file_name = f"{self.approach.__name__}_{self.subject.project_name}{self.subject.bug_id}_I{self.fixKit_iterations}-{variant}-{tests_identifier_avicenna}{tests_identifier_tests4py}-{engine_identifier}-{self.seed}"
-
-        out = Path(path) / f"{file_name}.txt"
-        with open(out, "w") as f:
-            f.write(self.output)
-
     def write_to_csv(self, file: str):
         with open(file, "a", newline="") as file:
             writer = csv.writer(file)
@@ -336,4 +445,4 @@ class EvaluationPipeline():
                 "baseline_failing", "baseline_passing", "fault_localization_tests", "validation_tests",
                 "test_collection_duration", "repair_duration", "evaluation_duration", "best_fitness", 
                 "precision", "recall", "f1_score", "accuracy", "patches"]
-            writer.writerow(header)       
+            writer.writerow(header)        

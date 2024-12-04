@@ -1,3 +1,0 @@
-PyGenProg,middle_2,True,914.8241710662842
-FITNESS:
-[GeneticCandidate@tmp/middle_2(1)[1.00]]

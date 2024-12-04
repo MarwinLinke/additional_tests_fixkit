@@ -177,15 +177,23 @@ def get_evaluation_data(
         approach_identifier: str, 
         subject_identifier: str, 
         bug_id: int
-    ) -> Tuple[Type[GeneticRepair], Dict[str, float], Project, BenchmarkProgram]:
+    ) -> Tuple[Type[GeneticRepair], Dict[str, float], Project]:
 
     approach_data = APPROACHES[approach_identifier]
     subject_data = SUBJECTS[subject_identifier][bug_id]
     approach, parameters = approach_data
-    subject, benchmark_callable = subject_data
+    subject, _ = subject_data
+
+    return approach, parameters, subject
+
+
+def get_benchmark_program(subject: str, bug_id: int) -> BenchmarkProgram:
+    subject_data = SUBJECTS[subject][bug_id]
+    _, benchmark_callable = subject_data
     benchmark_program = benchmark_callable()
 
-    return approach, parameters, subject, benchmark_program
+    return benchmark_program
+    
 
 
 def almost_equal(value, target, delta=0.0001):
