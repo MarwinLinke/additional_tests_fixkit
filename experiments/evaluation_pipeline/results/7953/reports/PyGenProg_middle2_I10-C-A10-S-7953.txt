@@ -1,0 +1,303 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+Used 10 failing and 10 passing test cases from Avicenna in the fault localization
+Used 10 failing and 10 passing test cases from Avicenna in the validation
+In total 20 for fault localization and 20 for validation.
+The gathering of test cases took 3.9603 seconds.
+The repair ran for 1241.8320 seconds.
+The evaluation took 186.5917 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.9854545454545455
+BEST F1 SCORE: 0.9259259259259259
+Found a total of 10 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/middle_2(11)[0.99]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,12 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
++        else:
+             return x
+-    return z
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(13)[0.99]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,12 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
++        else:
+             return x
+-    return z
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(10)[0.97]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,12 @@
+ def middle(x, y, z):
+     if y < z:
++        return x
+         if x < y:
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(10)[0.97]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,12 @@
+ def middle(x, y, z):
+     if y < z:
++        return x
+         if x < y:
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(9)[0.97]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,12 @@
+ def middle(x, y, z):
+     if y < z:
++        return x
+         if x < y:
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(11)[0.97]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,12 @@
+ def middle(x, y, z):
+     if y < z:
++        return x
+         if x < y:
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(10)[0.97]
+No tests4py report was found, matrix could not be calculated.
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,12 @@
+ def middle(x, y, z):
+     if y < z:
++        return x
+         if x < y:
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(15)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,10 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        else:
++            pass
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(11)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,10 +3,10 @@
+         if x < y:
+             return y
+         elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(10)[0.08]
+---------- Evaluation Matrix ----------
+STILL PASSING: [42/50]
+NOW FAILING: [8/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.42
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,10 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
++        else:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+

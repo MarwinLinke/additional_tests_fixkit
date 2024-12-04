@@ -1,0 +1,95 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+Used 30 failing and 30 passing test cases from Avicenna in the fault localization
+Used 30 failing and 30 passing test cases from Avicenna in the validation
+In total 60 for fault localization and 60 for validation.
+The gathering of test cases took 3.9424 seconds.
+The repair ran for 405.2828 seconds.
+The evaluation took 66.7633 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.5454545454545454
+BEST F1 SCORE: 0.6666666666666666
+Found a total of 2 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/markup_1(2)[0.55]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [25/50]
+STILL FAILING: [25/50]
+PRECISION: 1.0
+RECALL: 0.5
+ACCURACY: 0.75
+F1 SCORE: 0.6666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
++        elif c == '"' or (c == "'" and tag):
++            pass
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(2)[0.51]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [23/50]
+STILL FAILING: [27/50]
+PRECISION: 1.0
+RECALL: 0.46
+ACCURACY: 0.73
+F1 SCORE: 0.6301369863013699
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,16 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
++            if not tag:
++                out = out + c
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+

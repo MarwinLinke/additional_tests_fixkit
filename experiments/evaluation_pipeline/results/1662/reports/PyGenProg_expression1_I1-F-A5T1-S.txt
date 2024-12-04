@@ -1,0 +1,3175 @@
+APPROACH: PyGenProg
+SUBJECT: expression_1
+Used 5 failing and 5 passing test cases from Avicenna in the fault localization
+Used 1 failing and 10 passing test cases from Tests4py in the validation
+In total 10 for fault localization and 11 for validation.
+The gathering of test cases took 3.9038 seconds.
+The repair ran for 399.6444 seconds.
+The evaluation took 412.4755 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.09090909090909091
+BEST F1 SCORE: 0.0
+Found a total of 39 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,10 @@
+ import sys
+-
+ from expression.expr.parse import parse
+-
+ 
+ def evaluate(arg):
+     term = parse(arg)
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +12,6 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
+-    main()
++pass
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+-    assert not tokens
++    pass
+     return term
+-
+ 
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,61 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+         return term
++
++        class Term:
++
++            def evaluate(self) -> float | int:
++                pass
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,57 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
++    tokens = list(reversed(s.split(' ')))
+     return term
+-
+ 
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,41 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +43,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,41 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        token = tokens.pop(0)
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +43,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,41 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+-
++        return term
+ 
+ class Div(Binary):
++
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +43,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,10 @@
+ import sys
+-
+ from expression.expr.parse import parse
+-
+ 
+ def evaluate(arg):
+     term = parse(arg)
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +12,8 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
++if __name__ == '__main__':
+     main()
++pass
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        return -t
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(0)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.07]
+---------- Evaluation Matrix ----------
+STILL PASSING: [40/50]
+NOW FAILING: [10/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.4
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,41 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        assert token == '('
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +43,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.05]
+---------- Evaluation Matrix ----------
+STILL PASSING: [27/50]
+NOW FAILING: [23/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.27
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,50 +1,52 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+     def evaluate(self) -> float | int:
++        return Mul(parse_mul_div(tokens), term)
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.05]
+---------- Evaluation Matrix ----------
+STILL PASSING: [27/50]
+NOW FAILING: [23/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.27
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
+-        tokens.pop(0)
++    if tokens and tokens[0] in '~':
++        pass
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.04]
+---------- Evaluation Matrix ----------
+STILL PASSING: [24/50]
+NOW FAILING: [26/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.24
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,44 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
++        if token == '+':
++            return Add(parse_add_sub(tokens), term)
++        else:
++            return Sub(parse_add_sub(tokens), term)
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +46,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.04]
+---------- Evaluation Matrix ----------
+STILL PASSING: [24/50]
+NOW FAILING: [26/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.24
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+-        self.left = left
++        self.value = value
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,10 @@
+ import sys
+-
+ from expression.expr.parse import parse
+ 
+-
+ def evaluate(arg):
+-    term = parse(arg)
++    pass
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +12,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,10 @@
+ import sys
+-
+ from expression.expr.parse import parse
+ 
+-
+ def evaluate(arg):
+-    term = parse(arg)
++    pass
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +12,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
+-        return l / r
+-
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        pass
+ 
+ class Neg(Term):
++
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+-    term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    pass
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+-    term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    pass
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+-    term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    assert token == '('
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+-    term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    pass
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,11 @@
+ import sys
+-
+ from expression.expr.parse import parse
+-
+ 
+ def evaluate(arg):
+     term = parse(arg)
++    return Div(parse_mul_div(tokens), term)
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +13,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+-    term = parse_add_sub(tokens)
++    pass
+     assert not tokens
+     return term
+-
+ 
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+-    token = tokens.pop(0)
++    pass
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return l / r
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,49 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
+-        token = tokens.pop(0)
+-        if token == "+":
+-            return Add(parse_add_sub(tokens), term)
+-        else:
+-            return Sub(parse_add_sub(tokens), term)
+-    else:
+-        return term
++    s = s.strip()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,42 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
+-        return l + r
++        l, r = (self.left.evaluate(), self.right.evaluate())
+ 
++        def __init__(self, value: int):
++            self.value = value
+ 
+ class Sub(Binary):
++
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +44,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,50 +1,51 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+     def evaluate(self) -> float | int:
+         t = self.term.evaluate()
+-        return -t
+-
++        pass
+ 
+ class Constant(Term):
++
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    l, r = (self.left.evaluate(), self.right.evaluate())
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
+-        return l - r
+-
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        pass
+ 
+ class Mul(Binary):
++
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,50 +1,51 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+     def evaluate(self) -> float | int:
+         t = self.term.evaluate()
+-        return -t
+-
++        pass
+ 
+ class Constant(Term):
++
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/evaluate.py
++++ src/expression/evaluate.py
+@@ -1,13 +1,20 @@
+ import sys
+-
+ from expression.expr.parse import parse
+ 
++def evaluate(arg):
+ 
+-def evaluate(arg):
+-    term = parse(arg)
++    def parse_mul_div(tokens: List[str]) -> Term:
++        term = parse_neg(tokens)
++        if tokens and tokens[0] in '*/':
++            token = tokens.pop(0)
++            if token == '*':
++                return Mul(parse_mul_div(tokens), term)
++            else:
++                return Div(parse_mul_div(tokens), term)
++        else:
++            return term
+     result = term.evaluate()
+     return result
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -15,9 +22,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 1, "wrong number of arguments"
++    assert len(args) == 1, 'wrong number of arguments'
+     print(evaluate(args[0]))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+-    term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    pass
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+No tests4py report was found, matrix could not be calculated.
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
+-        return l * r
+-
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        pass
+ 
+ class Div(Binary):
++
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,52 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
+-        tokens.pop(0)
+-        return Neg(term)
+-    else:
+-        return term
+-
++    pass
+ 
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(2)[0.00]
+---------- Evaluation Matrix ----------
+STILL PASSING: [0/50]
+NOW FAILING: [50/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.0
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,56 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    pass
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+ 
+-
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+

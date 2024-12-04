@@ -1,0 +1,53 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+Used 10 failing and 10 passing test cases from Avicenna in the fault localization
+Used 10 failing and 10 passing test cases from Avicenna in the validation
+In total 20 for fault localization and 20 for validation.
+The gathering of test cases took 3.8395 seconds.
+The repair ran for 579.3398 seconds.
+The evaluation took 83.8262 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.09090909090909091
+BEST F1 SCORE: 0.0
+Found a total of 1 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/middle_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,17 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
++    elif x > y:
++        m = y
++        if y < z:
++            if x < y:
++                m = y
++            elif x < z:
++                m = y
++        elif x > y:
+             m = y
+         elif x > z:
+             m = x
+-    return m
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+

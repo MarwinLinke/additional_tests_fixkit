@@ -1,0 +1,97 @@
+APPROACH: PyGenProg
+SUBJECT: expression_1
+Used 50 failing and 50 passing test cases from Avicenna in the fault localization
+Used 50 failing and 50 passing test cases from Avicenna in the validation
+In total 100 for fault localization and 100 for validation.
+The gathering of test cases took 2.7429 seconds.
+The repair ran for 883.5609 seconds.
+The evaluation took 66.0566 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.06545454545454546
+BEST F1 SCORE: 0.0
+Found a total of 1 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/expression_1(2)[0.07]
+---------- Evaluation Matrix ----------
+STILL PASSING: [36/50]
+NOW FAILING: [14/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.36
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
+-        return l * r
+-
++        l, r = (self.left.evaluate(), self.right.evaluate())
++        term = parse_add_sub(tokens)
+ 
+ class Div(Binary):
++
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+

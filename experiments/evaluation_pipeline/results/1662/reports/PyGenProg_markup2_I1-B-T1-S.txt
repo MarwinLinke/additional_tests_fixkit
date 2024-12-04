@@ -1,0 +1,148 @@
+APPROACH: PyGenProg
+SUBJECT: markup_2
+Used 1 failing and 10 passing test cases from Tests4py in the fault localization
+Used 1 failing and 10 passing test cases from Tests4py in the validation
+In total 11 for fault localization and 11 for validation.
+The gathering of test cases took 8.6543 seconds.
+The repair ran for 664.2211 seconds.
+The evaluation took 205.2206 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.43272727272727274
+BEST F1 SCORE: 0.45161290322580644
+Found a total of 4 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/markup_2(1)[0.43]
+---------- Evaluation Matrix ----------
+STILL PASSING: [28/50]
+NOW FAILING: [22/50]
+NOW PASSING: [21/50]
+STILL FAILING: [29/50]
+PRECISION: 0.4883720930232558
+RECALL: 0.42
+ACCURACY: 0.49
+F1 SCORE: 0.45161290322580644
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = True
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif (c == '"' or c == "'") and tag:  # <-- FIX
+-            quote = not quote
++        elif (c == '"' or c == "'") and tag:
++            quote = False
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_2(2)[0.34]
+---------- Evaluation Matrix ----------
+STILL PASSING: [27/50]
+NOW FAILING: [23/50]
+NOW PASSING: [16/50]
+STILL FAILING: [34/50]
+PRECISION: 0.41025641025641024
+RECALL: 0.32
+ACCURACY: 0.43
+F1 SCORE: 0.35955056179775285
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = True
+-    quote = False
+-    out = ""
+-
++    tag = False
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif (c == '"' or c == "'") and tag:  # <-- FIX
++        elif (c == '"' or c == "'") and tag:
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_2(0)[0.32]
+---------- Evaluation Matrix ----------
+STILL PASSING: [28/50]
+NOW FAILING: [22/50]
+NOW PASSING: [15/50]
+STILL FAILING: [35/50]
+PRECISION: 0.40540540540540543
+RECALL: 0.3
+ACCURACY: 0.43
+F1 SCORE: 0.3448275862068966
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_2(1)[0.31]
+---------- Evaluation Matrix ----------
+STILL PASSING: [28/50]
+NOW FAILING: [22/50]
+NOW PASSING: [14/50]
+STILL FAILING: [36/50]
+PRECISION: 0.3888888888888889
+RECALL: 0.28
+ACCURACY: 0.42
+F1 SCORE: 0.32558139534883723
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+-    tag = True
++    pass
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif (c == '"' or c == "'") and tag:  # <-- FIX
++        elif (c == '"' or c == "'") and tag:
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+

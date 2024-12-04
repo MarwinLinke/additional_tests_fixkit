@@ -1,0 +1,52 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+Used 50 failing and 50 passing test cases from Avicenna in the fault localization
+Used 50 failing and 50 passing test cases from Avicenna in the validation
+In total 100 for fault localization and 100 for validation.
+The gathering of test cases took 2.3161 seconds.
+The repair ran for 738.1660 seconds.
+The evaluation took 132.7304 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.9672727272727273
+BEST F1 SCORE: 0.8474576271186441
+Found a total of 1 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/middle_1(1)[0.97]
+---------- Evaluation Matrix ----------
+STILL PASSING: [32/50]
+NOW FAILING: [18/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.7352941176470589
+RECALL: 1.0
+ACCURACY: 0.82
+F1 SCORE: 0.8474576271186441
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,9 @@
+ def middle(x, y, z):
+     m = z
+     if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        m = x
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+

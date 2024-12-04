@@ -1,0 +1,103 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+Used 5 failing and 5 passing test cases from Avicenna in the fault localization
+Used 5 failing and 5 passing test cases from Avicenna in the validation
+In total 10 for fault localization and 10 for validation.
+The gathering of test cases took 1.7098 seconds.
+The repair ran for 386.7860 seconds.
+The evaluation took 136.7430 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.09090909090909091
+BEST F1 SCORE: 0.0
+Found a total of 3 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/middle_1(0)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,7 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(2)[0.07]
+---------- Evaluation Matrix ----------
+STILL PASSING: [39/50]
+NOW FAILING: [11/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.39
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,12 +2,11 @@
+     m = z
+     if y < z:
+         if x < y:
+-            m = y
++            pass
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+

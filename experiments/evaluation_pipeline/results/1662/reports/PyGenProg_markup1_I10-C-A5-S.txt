@@ -1,0 +1,69 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+Used 5 failing and 5 passing test cases from Avicenna in the fault localization
+Used 5 failing and 5 passing test cases from Avicenna in the validation
+In total 10 for fault localization and 10 for validation.
+The gathering of test cases took 7.6946 seconds.
+The repair ran for 1058.3716 seconds.
+The evaluation took 105.6686 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.22545454545454546
+BEST F1 SCORE: 0.23255813953488372
+Found a total of 1 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/markup_1(10)[0.23]
+---------- Evaluation Matrix ----------
+STILL PASSING: [24/50]
+NOW FAILING: [26/50]
+NOW PASSING: [10/50]
+STILL FAILING: [40/50]
+PRECISION: 0.2777777777777778
+RECALL: 0.2
+ACCURACY: 0.34
+F1 SCORE: 0.23255813953488372
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,28 @@
+ def remove_html_markup(s):
+-    tag = False
++
++    def remove_html_markup(s):
++        tag = False
++        quote = False
++        out = ''
++        for c in s:
++            if c == '<' and (not quote):
++                tag = True
++            elif c == '>' and (not quote):
++                tag = False
++            elif c == '"' or (c == "'" and tag):
++                quote = not quote
++            elif not tag:
++                out = out + c
++        return out
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+

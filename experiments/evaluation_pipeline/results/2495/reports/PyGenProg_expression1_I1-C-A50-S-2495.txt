@@ -1,0 +1,134 @@
+APPROACH: PyGenProg
+SUBJECT: expression_1
+Used 50 failing and 50 passing test cases from Avicenna in the fault localization
+Used 50 failing and 50 passing test cases from Avicenna in the validation
+In total 100 for fault localization and 100 for validation.
+The gathering of test cases took 1.6243 seconds.
+The repair ran for 440.2255 seconds.
+The evaluation took 81.1488 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.09090909090909091
+BEST F1 SCORE: 0.0
+Found a total of 2 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/expression_1(0)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(1)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/parse.py
++++ src/expression/expr/parse.py
+@@ -1,71 +1,57 @@
+ from typing import List
+-
+-# noinspection PyUnresolvedReferences
+-from expression.expr.arithmetic import (
+-    Constant,
+-    Term,
+-    Add,
+-    Neg,
+-    Sub,
+-    Mul,
+-    Div,
+-)
+-
++from expression.expr.arithmetic import Constant, Term, Add, Neg, Sub, Mul, Div
+ 
+ def parse(s: str):
+-    s = s.replace("(", " ( ")
+-    s = s.replace(")", " ) ")
+-    while "  " in s:
+-        s = s.replace("  ", " ")
++    s = s.replace('(', ' ( ')
++    s = s.replace(')', ' ) ')
++    while '  ' in s:
++        s = s.replace('  ', ' ')
+     s = s.strip()
+-    tokens = list(reversed(s.split(" ")))
++    tokens = list(reversed(s.split(' ')))
+     assert tokens
+     term = parse_add_sub(tokens)
+     assert not tokens
+     return term
+ 
+-
+ def parse_terminal(tokens) -> Term:
+     token = tokens.pop(0)
+     if token.isnumeric():
+         return Constant(int(token))
+-    elif token == ")":
++    elif token == ')':
+         term = parse_add_sub(tokens)
+         token = tokens.pop(0)
+-        assert token == "("
++        assert token == '('
+         return term
+     else:
+         assert False
+ 
+-
+ def parse_neg(tokens) -> Term:
+     term = parse_terminal(tokens)
+-    if tokens and tokens[0] in "~":
++    if tokens and tokens[0] in '~':
+         tokens.pop(0)
+         return Neg(term)
+     else:
+         return term
+ 
+-
+ def parse_mul_div(tokens: List[str]) -> Term:
+     term = parse_neg(tokens)
+-    if tokens and tokens[0] in "*/":
++    if tokens and tokens[0] in '*/':
+         token = tokens.pop(0)
+-        if token == "*":
++        if token == '*':
+             return Mul(parse_mul_div(tokens), term)
+         else:
+             return Div(parse_mul_div(tokens), term)
+     else:
+         return term
+-
++    term = parse_mul_div(tokens)
+ 
+ def parse_add_sub(tokens: List[str]) -> Term:
+     term = parse_mul_div(tokens)
+-    if tokens and tokens[0] in "+-":
++    if tokens and tokens[0] in '+-':
+         token = tokens.pop(0)
+-        if token == "+":
++        if token == '+':
+             return Add(parse_add_sub(tokens), term)
+         else:
+             return Sub(parse_add_sub(tokens), term)
+     else:
+-        return term
++        return term
+
+____________________________________________________________________________________________________
+

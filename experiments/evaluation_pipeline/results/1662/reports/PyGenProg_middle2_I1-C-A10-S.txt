@@ -1,0 +1,76 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+Used 10 failing and 10 passing test cases from Avicenna in the fault localization
+Used 10 failing and 10 passing test cases from Avicenna in the validation
+In total 20 for fault localization and 20 for validation.
+The gathering of test cases took 1.9233 seconds.
+The repair ran for 216.7675 seconds.
+The evaluation took 91.4354 seconds.
+Was a valid patch found: False
+BEST FITNESS: 0.09090909090909091
+BEST F1 SCORE: 0.0
+Found a total of 2 patches.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PATCHES (SORTED):
+GeneticCandidate@tmp/middle_2(0)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(2)[0.09]
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,20 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        else:
++            if y < z:
++                if x < y:
++                    return y
++                elif x < z:
++                    return y
++            elif x > y:
++                return y
++            elif x > z:
++                return x
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
