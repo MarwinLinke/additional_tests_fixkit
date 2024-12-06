@@ -97,7 +97,9 @@ class EvaluationPipeline():
 
         self.seed = seed
         self.patches: List[GeneticCandidate] = []
-        self.patch_matrices: Dict[GeneticCandidate, RepairEvaluationMatrix] = {}
+        self.matrices: List[RepairEvaluationMatrix] = []
+        self.filtered_patches: List[GeneticCandidate] = []
+        self.num_equivalent_patches: Dict[GeneticCandidate, int] = {}
         self.found: bool = False
         self.best_fitness: float = 0.0
         self.best_f1_score: float = 0.0
@@ -207,6 +209,14 @@ class EvaluationPipeline():
         self.repair_duration = time.time() - self.start_time - self.collection_duration
         LOGGER.info(f"Evaluation pipeline finished repair with {len(self.patches)} patches.")
 
+    def _filter_patches(self):
+        for patch in self.patches:
+            if patch in self.filtered_patches:
+                self.num_equivalent_patches[patch] += 1
+            else:
+                self.filtered_patches.append(patch)
+                self.num_equivalent_patches[patch] = 1
+
     def _evaluate(self):
         """
         Evaluates the patches, generated after the repair, with custom metric
@@ -223,13 +233,17 @@ class EvaluationPipeline():
             engine = Tests4PySystemTestSequentialEngine(GenProgFitness(set(self.evaluation_passing), set(self.evaluation_failing)), evaluation_tests, out="rep")
         engine.evaluate(self.patches)
 
-        self.patches.sort(key = lambda patch: patch.fitness, reverse = True)
-        self.best_fitness = self.patches[0].fitness if self.patches else 0.0
+        self._filter_patches()
+
+        patches: List[GeneticCandidate] = self.filtered_patches
+
+        patches.sort(key = lambda patch: patch.fitness, reverse = True)
+        self.best_fitness = patches[0].fitness if patches else 0.0
         if almost_equal(self.best_fitness, 1):
             self.found = True
 
-        for patch in self.patches:
-
+        for i in range(len(patches)):
+            patch = patches[i]
             if patch.tests4py_report:
                 passing: List[str] = []
                 failing: List[str] = []
@@ -242,7 +256,7 @@ class EvaluationPipeline():
                         failing.append(test)
 
                 matrix = RepairEvaluationMatrix(self.evaluation_passing, self.evaluation_failing, passing, failing)
-                self.patch_matrices[patch] = matrix
+                self.matrices.append(matrix)
                 
                 self.best_f1_score = max(self.best_f1_score, matrix.f1_score)
 
@@ -250,7 +264,7 @@ class EvaluationPipeline():
                 LOGGER.info(str(get_patch(patch)))
                 LOGGER.info(str(matrix))
             else:
-                self.patch_matrices[patch] = None
+                self.matrices.append(None)
                 LOGGER.info(f"Evaluation pipeline could not evaluate {patch}.")
 
         self.evaluation_duration = time.time() - self.start_time - self.collection_duration - self.repair_duration
@@ -284,10 +298,12 @@ class EvaluationPipeline():
         output += "".ljust(100, "%")
         output += f"\n\nPATCHES (SORTED):\n"
 
-        for patch in self.patches:
+        for i in range(len(self.filtered_patches)):
+            patch = self.filtered_patches[i]
             output += str(patch)
-            matrix = str(self.patch_matrices[patch] or "\nNo tests4py report was found, matrix could not be calculated.")
-            output += matrix
+            output += f" Found {self.num_equivalent_patches[patch]} equivalent patches."
+            matrix = self.matrices[i] or "\nNo tests4py report was found, matrix could not be calculated."
+            output += str(matrix)
             fix = get_patch(patch)
             if fix == "":
                 output += "\nPatch could not be printed.\n\n"
@@ -312,8 +328,7 @@ class EvaluationPipeline():
         with open(file, "a", newline="") as file:
             writer = csv.writer(file)
             variant = "C" if self.enhance_fault_localization and self.enhance_validation else "F" if self.enhance_fault_localization else "V" if self.enhance_validation else "B"
-            best_patch = self.patches[0]
-            matrix = self.patch_matrices[best_patch]
+            matrix = self.matrices[0]
             precision = matrix.precision if matrix else None
             recall = matrix.recall if matrix else None
             f1_score = matrix.f1_score if matrix else None

@@ -4,6 +4,9 @@ import csv
 import random
 import logging
 import numpy as np
+import argparse
+import sys
+from typing import List
 
 from data import get_evaluation_data, get_benchmark_program, SUBJECT_PARAMS, VARIANTS
 from pipeline import EvaluationPipeline
@@ -134,37 +137,45 @@ def _evaluate_subject(subject: str, seed: int, csv_file: Path, repair_tests_path
     param = SUBJECT_PARAMS[subject]
     project_name = param["SUBJECT"]
     bug_id = param["BUG_ID"]
-    for variant in VARIANTS.items():
-        variant_name, num_tests_version = variant
-        for iteration in param["ITERATIONS"]:
+    for iteration in param["ITERATIONS"]:
+        for variant in VARIANTS.items():
+            variant_name, num_tests_version = variant
             for num_tests in param[num_tests_version]:             
                 num_failing, num_passing = num_tests
                 _try_evaluate(project_name, bug_id, variant_name, iteration, num_failing, num_passing, repair_tests_path, evaluation_tests_path, csv_file, seed)
 
 
-SEEDS = [1662, 2427, 7953, 2495, 5180]
-REPAIR_TESTS_SEED = 0
-EVAL_TESTS_SEED = 1
+SEEDS = [1714, 3948, 5233, 7906, 9312]
+REPAIR_TESTS_SEEDS = [959, 2655, 4916, 6114, 8452]
+EVAL_TESTS_SEED = 0
 
 SIMULATE_EVALUATION = False
 
-def evaluate_all():
+def evaluate_all(index):
     """
     Evaluates all specified subjects. Generates test cases before every subject for every seed.
     Currently uses fixed seeds for test cases generation.
     """
-    seeds = [SEEDS[0]]
+    if index == -1:
+        clean_up()
+        return
+
+    if index >= len(SEEDS) or index < 0:
+        raise ValueError(f"Index for seeds must be in valid range: [0, {len(SEEDS) - 1}]")
+
     subjects_to_evaluate = ["MIDDLE_1", "MIDDLE_2", "CALCULATOR_1", "EXPRESSION_1", "MARKUP_1", "MARKUP_2"]
+    
     shutil.rmtree(REPAIR_TESTS, ignore_errors=True)
     shutil.rmtree(EVAL_TESTS, ignore_errors=True)
 
-    for seed in seeds:
-        csv_file = Path("out") / "csv_files" / f"data_seed_{seed}.csv"
-        EvaluationPipeline.write_csv_header(csv_file)
-        for subject in subjects_to_evaluate:
-            repair_tests_path = _generate_repair_tests(subject, REPAIR_TESTS_SEED)
-            evaluation_tests_path = _generate_evaluation_tests(subject, EVAL_TESTS_SEED)
-            _evaluate_subject(subject, seed, csv_file, repair_tests_path, evaluation_tests_path)
+    seed = SEEDS[index]
+    repair_tests_seed = REPAIR_TESTS_SEEDS[index]
+    csv_file = Path("out") / "csv_files" / f"data_seed_{seed}.csv"
+    EvaluationPipeline.write_csv_header(csv_file)
+    for subject in subjects_to_evaluate:
+        repair_tests_path = _generate_repair_tests(subject, repair_tests_seed)
+        evaluation_tests_path = _generate_evaluation_tests(subject, EVAL_TESTS_SEED)
+        _evaluate_subject(subject, seed, csv_file, repair_tests_path, evaluation_tests_path)
             
 
 def debug_evaluation():
@@ -172,7 +183,7 @@ def debug_evaluation():
     logging.getLogger("tests4py").propagate = False
 
     subject = "MIDDLE_1"
-    repair_tests_path = _generate_repair_tests(subject, REPAIR_TESTS_SEED)
+    repair_tests_path = _generate_repair_tests(subject, REPAIR_TESTS_SEEDS[0])
     eval_tests_path = _generate_evaluation_tests(subject, EVAL_TESTS_SEED)
     csv = "out/csv_files/seed_test.csv"
     EvaluationPipeline.write_csv_header(csv)
@@ -182,5 +193,18 @@ def debug_evaluation():
         # but differs more in different executions of the python file.
         _evaluate("MIDDLE", 1, "BASELINE", 1, 1, 10, repair_tests_path, eval_tests_path, csv, SEEDS[0])
 
+def clean_up():
+    shutil.rmtree(REPAIR_TESTS, ignore_errors=True)
+    shutil.rmtree(EVAL_TESTS, ignore_errors=True)
+    shutil.rmtree(REP, ignore_errors=True)
+    shutil.rmtree(TMP, ignore_errors=True)
+    shutil.rmtree(SFL, ignore_errors=True)
+
 if __name__ == "__main__":
-    evaluate_all()
+    args = sys.argv[1:]
+
+    if len(args) == 0:
+        debug_evaluation()
+
+    for arg in args:
+        evaluate_all(int(arg))
