@@ -4,9 +4,7 @@ import csv
 import random
 import logging
 import numpy as np
-import argparse
 import sys
-from typing import List
 
 from data import get_evaluation_data, get_benchmark_program, SUBJECT_PARAMS, VARIANTS
 from pipeline import EvaluationPipeline
@@ -17,6 +15,11 @@ TMP = "tmp"
 SFL = "sflkit_events"
 REPAIR_TESTS = "repair_tests"
 EVAL_TESTS = "evaluation_tests"
+
+BASELINE = "BASELINE"
+LOCALIZATION = "FAULT_LOCALIZATION"
+VALIDATION = "VALIDATION"
+COMPLETE = "COMPLETE"
 
 def _evaluate(project_name: str, bug_id: int, variant: str, iterations: int, num_failing: int, num_passing: int, repair_tests_path: Path, evaluation_tests_path: Path, csv: str, seed: int):
     
@@ -79,7 +82,7 @@ def _evaluate(project_name: str, bug_id: int, variant: str, iterations: int, num
         num_additional_passing=num_additional_passing,
         num_evaluation_failing=50,
         num_evaluation_passing=50,
-        enhance_fault_localization=enhance_fault_localization,
+        enhance_localization=enhance_fault_localization,
         enhance_validation=enhance_validation,
         use_parallel_engine=use_parallel_engine
     )
@@ -110,14 +113,15 @@ def _try_evaluate(project_name: str, bug_id: int, variant_name: str, iteration: 
             writer.writerow(data)
 
 
-def _generate_repair_tests(subject: str, seed: int):
+def _generate_repair_tests(subject: str, seed: int, num_failing: int = 50, num_passing: int = 50):
     """
     Generates and saves test cases for repair.
     """
     path = Path("repair_tests")
     benchmark_program = get_benchmark_program(SUBJECT_PARAMS[subject]["SUBJECT"], SUBJECT_PARAMS[subject]["BUG_ID"])
-    pre_generator = PreGenerator(subject, benchmark_program, 50, 50, path, seed)
+    pre_generator = PreGenerator(subject, benchmark_program, num_failing, num_passing, path, seed)
     return pre_generator.run()
+
 
 def _generate_evaluation_tests(subject: str, seed: int):
     """
@@ -127,6 +131,7 @@ def _generate_evaluation_tests(subject: str, seed: int):
     benchmark_program = get_benchmark_program(SUBJECT_PARAMS[subject]["SUBJECT"], SUBJECT_PARAMS[subject]["BUG_ID"])
     pre_generator = PreGenerator(subject, benchmark_program, 50, 50, path, seed)
     return pre_generator.run()
+
 
 def _evaluate_subject(subject: str, seed: int, csv_file: Path, repair_tests_path: Path, evaluation_tests_path: Path):
     """
@@ -160,6 +165,8 @@ def evaluate_all(index):
         clean_up()
         return
 
+    logging.getLogger("tests4py").propagate = False
+
     if index >= len(SEEDS) or index < 0:
         raise ValueError(f"Index for seeds must be in valid range: [0, {len(SEEDS) - 1}]")
 
@@ -182,16 +189,18 @@ def debug_evaluation():
     
     logging.getLogger("tests4py").propagate = False
 
-    subject = "MIDDLE_1"
-    repair_tests_path = _generate_repair_tests(subject, REPAIR_TESTS_SEEDS[0])
-    eval_tests_path = _generate_evaluation_tests(subject, EVAL_TESTS_SEED)
+    seed_index = 0
+    subject = "MIDDLE"
+    bug_id = 2
+    repair_tests_path = _generate_repair_tests(f"{subject}_{bug_id}", REPAIR_TESTS_SEEDS[seed_index], 50, 50)
+    eval_tests_path = _generate_evaluation_tests(f"{subject}_{bug_id}", EVAL_TESTS_SEED)
+    #repair_tests_path = Path(REPAIR_TESTS) / "PYSNOOPER_2_50-50_2655"
+    #eval_tests_path = Path(EVAL_TESTS) / "PYSNOOPER_2_50-50_2655"
     csv = "out/csv_files/seed_test.csv"
     EvaluationPipeline.write_csv_header(csv)
-    for _ in range(10):
-        # This generates a different number of patches despite having the same seed and same test cases! Why?
-        # Also the number of patches is similar in this loop (not the same), 
-        # but differs more in different executions of the python file.
-        _evaluate("MIDDLE", 1, "BASELINE", 1, 1, 10, repair_tests_path, eval_tests_path, csv, SEEDS[0])
+    for _ in range(1):
+        _evaluate(subject, bug_id, VALIDATION, 10, 30, 30, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
+
 
 def clean_up():
     shutil.rmtree(REPAIR_TESTS, ignore_errors=True)
@@ -199,6 +208,7 @@ def clean_up():
     shutil.rmtree(REP, ignore_errors=True)
     shutil.rmtree(TMP, ignore_errors=True)
     shutil.rmtree(SFL, ignore_errors=True)
+
 
 if __name__ == "__main__":
     args = sys.argv[1:]

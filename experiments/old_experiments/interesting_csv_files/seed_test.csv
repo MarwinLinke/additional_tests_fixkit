@@ -1,0 +1,1 @@
+approach,subject,bug_id,iterations,engine,variant,additional_failing,additional_passing,baseline_failing,baseline_passing,fault_localization_tests,validation_tests,test_collection_duration,repair_duration,evaluation_duration,best_fitness,precision,recall,f1_score,accuracy,patches,generations

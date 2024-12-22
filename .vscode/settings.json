@@ -2,6 +2,7 @@
     "python.analysis.extraPaths": [
         "./fixkit/src",
         "./avicenna/src"
-    ]
+    ],
+    "python.languageServer": "Pylance"
 
 }

@@ -1,32 +1,25 @@
 import random
 import time
-import shutil
 import csv
 import os
 import numpy as np
-
 from pathlib import Path
 from typing import Type, Dict, Any, Tuple, List
-from enum import Enum
 
 import tests4py.api as t4p
 from tests4py.api.test import TestResult
 from tests4py.projects import Project
-
 from fixkit.constants import DEFAULT_EXCLUDES
 from fixkit.fitness.engine import Tests4PySystemTestEngine, Tests4PySystemTestSequentialEngine
 from fixkit.repair.patch import get_patch
 from fixkit.fitness.metric import GenProgFitness
 from fixkit.localization.t4p import Tests4PySystemtestsLocalization
+from fixkit.localization.modifier import SigmoidModifier, TopRankModifier, TopEqualRankModifier, DefaultModifier
 from fixkit.repair import GeneticRepair
 from fixkit.candidate import GeneticCandidate
 from fixkit.repair.pyae import PyAE
 from fixkit.test_generation.test_generator import TestGenerator
-from fixkit.test_generation.fuzzer_test_generator import GrammarFuzzerTestGenerator
-from fixkit.test_generation.avicenna_test_generator import AvicennaTestGenerator
 from fixkit.logger import LOGGER
-
-from debugging_framework.benchmark.repository import BenchmarkProgram
 
 from repair_evaluation_matrix import RepairEvaluationMatrix
 from data import almost_equal
@@ -48,7 +41,7 @@ class EvaluationPipeline():
         num_additional_passing: int = 50,
         num_evaluation_failing: int = 50,
         num_evaluation_passing: int = 50,        
-        enhance_fault_localization: bool = False,
+        enhance_localization: bool = False,
         enhance_validation: bool = False,
         use_parallel_engine: bool = False
     ):
@@ -82,7 +75,7 @@ class EvaluationPipeline():
         self.num_evaluation_failing = num_evaluation_failing
         self.num_evaluation_passing = num_evaluation_passing
 
-        self.enhance_fault_localization = enhance_fault_localization
+        self.enhance_localization = enhance_localization
         self.enhance_validation = enhance_validation
         self.use_parallel_engine = use_parallel_engine
 
@@ -108,6 +101,8 @@ class EvaluationPipeline():
         self.collection_duration = 0.0
         self.repair_duration = 0.0
         self.evaluation_duration = 0.0
+
+        self.num_generations = 0
 
         self.output: str = ""
 
@@ -135,16 +130,17 @@ class EvaluationPipeline():
         if report.raised:
             raise report.raised
 
-        if not self.enhance_fault_localization or not self.enhance_validation:
+        if not self.enhance_localization or not self.enhance_validation:
             self._collect_tests4py_tests()
-        if self.enhance_fault_localization or self.enhance_validation:
+        if self.enhance_localization or self.enhance_validation:
             self._collect_fuzzer_tests()
 
         self.collection_duration = time.time() - self.start_time
-        LOGGER.info(f"Evaluation pipeline collected \
-            {len(self.repair_baseline_failing)} failing and {len(self.repair_baseline_passing)} passing test cases as baseline, \
-            {len(self.repair_additional_failing)} failing and {len(self.repair_additional_passing)} passing test cases additionaly."
-        )          
+        LOGGER.info(f"Evaluation pipeline collected "
+                    f"{len(self.repair_baseline_failing)} failing "
+                    f"and {len(self.repair_baseline_passing)} passing test cases as baseline, "
+                    f"{len(self.repair_additional_failing)} failing "
+                    f"and {len(self.repair_additional_passing)} passing test cases additionally.")          
 
     def _collect_tests4py_tests(self):
         """
@@ -166,18 +162,37 @@ class EvaluationPipeline():
         """
         Collect test cases, generated through a grammar based fuzzer.
         """
-        self.repair_additional_failing = TestGenerator.load_failing_test_paths(self.repair_tests_path, self.num_additional_failing)
-        self.repair_additional_passing = TestGenerator.load_passing_test_paths(self.repair_tests_path, self.num_additional_passing)
+        self.repair_additional_failing = TestGenerator.load_failing_test_paths(
+            self.repair_tests_path, self.num_additional_failing
+        )
+        
+        self.repair_additional_passing = TestGenerator.load_passing_test_paths(
+            self.repair_tests_path, self.num_additional_passing
+        )
 
     def _repair(self):
         """
         Starts the repair process.
         """
-        baseline_tests = self.repair_baseline_passing + self.repair_baseline_failing
-        additional_tests = self.repair_additional_passing + self.repair_additional_failing
+        self.localization_failing = (
+            self.repair_additional_failing 
+            if self.enhance_localization 
+            else self.repair_baseline_failing)
+        self.localization_passing = (
+            self.repair_additional_passing 
+            if self.enhance_localization 
+            else self.repair_baseline_passing)    
+        self.localization_tests = self.localization_failing + self.localization_passing
 
-        self.fault_localization_test_cases = additional_tests if self.enhance_fault_localization else baseline_tests
-        self.validation_test_cases = additional_tests if self.enhance_validation else baseline_tests
+        self.validation_failing = (
+            self.repair_additional_failing 
+            if self.enhance_validation 
+            else self.repair_baseline_failing)
+        self.validation_passing = (
+            self.repair_additional_passing 
+            if self.enhance_validation 
+            else self.repair_baseline_passing)  
+        self.validation_tests = self.validation_failing + self.validation_passing
 
         params = self.parameters
         if self.approach != PyAE:
@@ -192,22 +207,27 @@ class EvaluationPipeline():
                 predicates=["line"],
                 metric="Ochiai",
                 out="rep",
-                tests = self.fault_localization_test_cases
+                tests = self.localization_tests
             ),
             out="rep",
             is_t4p=True,
             is_system_test = True,
-            system_tests = self.validation_test_cases,
+            failing_tests = self.validation_failing,
+            passing_tests = self.validation_passing,
+            serial = False,
+            modifier = TopEqualRankModifier(),
             **params
         )
 
         self._set_seed()
         self.patches: List[GeneticCandidate] = approach.repair()
+        self.num_generations = approach.current_gen
 
         LOGGER.info(f"Evaluation pipeline generates random number for seed verification: {random.randint(0, 1000)}, {np.random.randint(0, 1000)}.")
+        LOGGER.info(f"Evaluation pipeline finished repair with {len(self.patches)} patches.")
 
         self.repair_duration = time.time() - self.start_time - self.collection_duration
-        LOGGER.info(f"Evaluation pipeline finished repair with {len(self.patches)} patches.")
+
 
     def _filter_patches(self):
         for patch in self.patches:
@@ -219,18 +239,23 @@ class EvaluationPipeline():
 
     def _evaluate(self):
         """
-        Evaluates the patches, generated after the repair, with custom metric
+        Evaluates the patches, generated after the repair, with custom metric.
         """      
-        self.evaluation_failing = TestGenerator.load_failing_test_paths(self.evaluation_tests_path, self.num_evaluation_failing)
-        self.evaluation_passing = TestGenerator.load_passing_test_paths(self.evaluation_tests_path, self.num_evaluation_passing)
+        self.evaluation_failing = TestGenerator.load_failing_test_paths(
+            self.evaluation_tests_path, self.num_evaluation_failing
+        )
+        self.evaluation_passing = TestGenerator.load_passing_test_paths(
+            self.evaluation_tests_path, self.num_evaluation_passing
+        )
         evaluation_tests = self.evaluation_passing + self.evaluation_failing
 
         LOGGER.info(f"Evaluation pipeline loaded {len(self.evaluation_failing)} failing and {len(self.evaluation_passing)} passing test cases for evaluation.")
 
+        fitness = GenProgFitness(set(self.evaluation_passing), set(self.evaluation_failing))
         if self.use_parallel_engine:
-            engine = Tests4PySystemTestEngine(GenProgFitness(set(self.evaluation_passing), set(self.evaluation_failing)), evaluation_tests, workers=32, out="rep")
+            engine = Tests4PySystemTestEngine(fitness, evaluation_tests, workers=32, out="rep")
         else:
-            engine = Tests4PySystemTestSequentialEngine(GenProgFitness(set(self.evaluation_passing), set(self.evaluation_failing)), evaluation_tests, out="rep")
+            engine = Tests4PySystemTestSequentialEngine(fitness, evaluation_tests, out="rep")
         engine.evaluate(self.patches)
 
         self._filter_patches()
@@ -260,9 +285,10 @@ class EvaluationPipeline():
                 
                 self.best_f1_score = max(self.best_f1_score, matrix.f1_score)
 
-                LOGGER.info(f"Evaluation pipeline evaluated patch {patch}:")
-                LOGGER.info(str(get_patch(patch)))
-                LOGGER.info(str(matrix))
+                LOGGER.info(f"Evaluation pipeline evaluated patch {patch}:\n"
+                            f"Mutations: {patch.mutations}\n"
+                            f"{get_patch(patch)}\n"
+                            f"{matrix}\n")
             else:
                 self.matrices.append(None)
                 LOGGER.info(f"Evaluation pipeline could not evaluate {patch}.")
@@ -274,51 +300,68 @@ class EvaluationPipeline():
         """
         Formates output to write in a file.
         """
-        output: str = f"APPROACH: {self.approach.__name__}\n"
-        output += f"SUBJECT: {self.subject.get_identifier()}\n"
+        localization_tests = (
+            f"{len(self.repair_additional_failing)} failing, {len(self.repair_additional_passing)} passing"
+            if self.enhance_localization
+            else f"{len(self.repair_baseline_failing)} failing, {len(self.repair_baseline_passing)} passing"
+        )
 
-        if self.enhance_fault_localization:
-            output += f"Used {len(self.repair_additional_failing)} failing and {len(self.repair_additional_passing)} passing test cases from Avicenna in the fault localization\n"
-        else:
-            output += f"Used {len(self.repair_baseline_failing)} failing and {len(self.repair_baseline_passing)} passing test cases from Tests4py in the fault localization\n"
-        
-        if self.enhance_validation:
-            output += f"Used {len(self.repair_additional_failing)} failing and {len(self.repair_additional_passing)} passing test cases from Avicenna in the validation\n"
-        else:
-            output += f"Used {len(self.repair_baseline_failing)} failing and {len(self.repair_baseline_passing)} passing test cases from Tests4py in the validation\n"
+        validation_tests = (
+            f"{len(self.repair_additional_failing)} failing, {len(self.repair_additional_passing)} passing"
+            if self.enhance_validation
+            else f"{len(self.repair_baseline_failing)} failing, {len(self.repair_baseline_passing)} passing"
+        )
 
-        output += f"In total {len(self.fault_localization_test_cases)} for fault localization and {len(self.validation_test_cases)} for validation.\n"
-        output += f"The gathering of test cases took {"{:.4f}".format(self.collection_duration)} seconds.\n"
-        output += f"The repair ran for {"{:.4f}".format(self.repair_duration)} seconds.\n"
-        output += f"The evaluation took {"{:.4f}".format(self.evaluation_duration)} seconds.\n"
-        output += f"Was a valid patch found: {self.found}\n"
-        output += f"BEST FITNESS: {self.best_fitness}\n"
-        output += f"BEST F1 SCORE: {self.best_f1_score}\n"
-        output += f"Found a total of {len(self.patches)} patches.\n\n"
-        output += "".ljust(100, "%")
-        output += f"\n\nPATCHES (SORTED):\n"
+        enhanced_localization = "(Enhanced)" if self.enhance_localization else "(Baseline)"
+        enhanced_validation = "(Enhanced)" if self.enhance_validation else "(Baseline)"
 
-        for i in range(len(self.filtered_patches)):
-            patch = self.filtered_patches[i]
-            output += str(patch)
-            output += f" Found {self.num_equivalent_patches[patch]} equivalent patches."
+        output = (
+            f"APPROACH: {self.approach.__name__}\n"
+            f"SUBJECT: {self.subject.get_identifier()}\n\n"
+            f"Test Cases Used:\n"
+            f"  - {enhanced_localization} Fault Localization: {localization_tests} "
+            f"(Total: {len(self.localization_tests)})\n"
+            f"  - {enhanced_validation} Validation: {validation_tests} "
+            f"(Total: {len(self.validation_tests)})\n\n"
+            f"Execution Times:\n"
+            f"  - Test Case Gathering: {self.collection_duration:.4f} seconds\n"
+            f"  - Repair: {self.repair_duration:.4f} seconds\n"
+            f"  - Evaluation: {self.evaluation_duration:.4f} seconds\n\n"
+            f"Results:\n"
+            f"  - Valid Patch Found: {self.found}\n"
+            f"  - Best Fitness: {self.best_fitness:.4f}\n"
+            f"  - Best F1 Score: {self.best_f1_score:.4f}\n"
+            f"  - Total Patches Found: {len(self.patches)}\n"
+            f"  - Generations Completed: {self.num_generations}/{self.fixKit_iterations}\n\n"
+        )    
+
+        output += "".ljust(100, "%") + "\n\nSorted patches by descending fitness:\n\n"
+
+        for i, patch in enumerate(self.filtered_patches):
+            output += (
+                f"{patch}\n"
+                f"Found {self.num_equivalent_patches[patch]} equivalent patches.\n"
+                f"Mutations: {patch.mutations}\n"
+            )
             matrix = self.matrices[i] or "\nNo tests4py report was found, matrix could not be calculated."
             output += str(matrix)
             fix = get_patch(patch)
-            if fix == "":
+            if not fix:
                 output += "\nPatch could not be printed.\n\n"
             else:
                 output += f"\n{fix}\n"
-            output += f"{"".ljust(100, "_")}\n\n"
+            output += "".ljust(100, "_") + "\n\n"
 
         self.output = output
 
     def write_report(self, path: os.PathLike):
-        variant = "C" if self.enhance_fault_localization and self.enhance_validation else "F" if self.enhance_fault_localization else "V" if self.enhance_validation else "B"
-        tests_identifier_avicenna = f"A{self.num_additional_failing}" if variant != "B" else ""
-        tests_identifier_tests4py = f"T{self.num_baseline_failing}" if variant != "C" else ""
+        variant = "C" if self.enhance_localization and self.enhance_validation else "F" if self.enhance_localization else "V" if self.enhance_validation else "B"
+        tests_identifier = (f"{self.num_additional_failing}-{self.num_additional_passing}" if variant != "B"
+                            else f"{self.num_baseline_failing}-{self.num_baseline_passing}")
         engine_identifier = "P" if self.use_parallel_engine else "S"
-        file_name = f"{self.approach.__name__}_{self.subject.project_name}{self.subject.bug_id}_I{self.fixKit_iterations}-{variant}-{tests_identifier_avicenna}{tests_identifier_tests4py}-{engine_identifier}-{self.seed}"
+        file_name = (f"{self.approach.__name__}_{self.subject.project_name}{self.subject.bug_id}"
+                     f"_I{self.fixKit_iterations}_{variant}_({tests_identifier})"
+                     f"_{engine_identifier}_{self.seed}")
 
         out = Path(path) / f"{file_name}.txt"
         with open(out, "w") as f:
@@ -327,7 +370,7 @@ class EvaluationPipeline():
     def write_to_csv(self, file: str):
         with open(file, "a", newline="") as file:
             writer = csv.writer(file)
-            variant = "C" if self.enhance_fault_localization and self.enhance_validation else "F" if self.enhance_fault_localization else "V" if self.enhance_validation else "B"
+            variant = "C" if self.enhance_localization and self.enhance_validation else "F" if self.enhance_localization else "V" if self.enhance_validation else "B"
             matrix = self.matrices[0]
             precision = matrix.precision if matrix else None
             recall = matrix.recall if matrix else None
@@ -338,9 +381,10 @@ class EvaluationPipeline():
                     self.fixKit_iterations, engine, variant, 
                     len(self.repair_additional_failing), len(self.repair_additional_passing),
                     len(self.repair_baseline_failing), len(self.repair_baseline_passing),
-                    len(self.fault_localization_test_cases), len(self.validation_test_cases),
+                    len(self.localization_tests), len(self.validation_tests),
                     self.collection_duration, self.repair_duration, self.evaluation_duration,
-                    self.best_fitness, precision, recall, f1_score, accuracy, len(self.patches)]
+                    self.best_fitness, precision, recall, f1_score, accuracy, len(self.patches),
+                    self.num_generations]
             writer.writerow(data)
 
     @staticmethod
@@ -350,5 +394,5 @@ class EvaluationPipeline():
             header =["approach", "subject", "bug_id", "iterations", "engine", "variant", "additional_failing", "additional_passing", 
                 "baseline_failing", "baseline_passing", "fault_localization_tests", "validation_tests",
                 "test_collection_duration", "repair_duration", "evaluation_duration", "best_fitness", 
-                "precision", "recall", "f1_score", "accuracy", "patches"]
+                "precision", "recall", "f1_score", "accuracy", "patches", "generations"]
             writer.writerow(header)       
