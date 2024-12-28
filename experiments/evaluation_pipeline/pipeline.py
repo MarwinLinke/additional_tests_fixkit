@@ -355,6 +355,7 @@ class EvaluationPipeline():
         self.output = output
 
     def write_report(self, path: os.PathLike):
+        Path(path).mkdir(parents=True, exist_ok=True)
         variant = "C" if self.enhance_localization and self.enhance_validation else "F" if self.enhance_localization else "V" if self.enhance_validation else "B"
         tests_identifier = (f"{self.num_additional_failing}-{self.num_additional_passing}" if variant != "B"
                             else f"{self.num_baseline_failing}-{self.num_baseline_passing}")
@@ -367,8 +368,10 @@ class EvaluationPipeline():
         with open(out, "w") as f:
             f.write(self.output)
 
-    def write_to_csv(self, file: str):
-        with open(file, "a", newline="") as file:
+    def write_to_csv(self, directory: os.PathLike, file_name: str):
+        path = Path(directory)
+        path.mkdir(parents=True, exist_ok=True)
+        with open(path / file_name, "a", newline="") as file:
             writer = csv.writer(file)
             variant = "C" if self.enhance_localization and self.enhance_validation else "F" if self.enhance_localization else "V" if self.enhance_validation else "B"
             matrix = self.matrices[0]
@@ -388,8 +391,10 @@ class EvaluationPipeline():
             writer.writerow(data)
 
     @staticmethod
-    def write_csv_header(file: str):
-        with open(file, "w", newline="") as file:
+    def write_csv_header(directory: os.PathLike, file_name: str):
+        path = Path(directory)
+        path.mkdir(parents=True, exist_ok=True)
+        with open(path / file_name, "w", newline="") as file:
             writer = csv.writer(file)
             header =["approach", "subject", "bug_id", "iterations", "engine", "variant", "additional_failing", "additional_passing", 
                 "baseline_failing", "baseline_passing", "fault_localization_tests", "validation_tests",
