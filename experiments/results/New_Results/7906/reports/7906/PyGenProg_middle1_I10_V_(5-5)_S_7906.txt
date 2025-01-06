@@ -1,0 +1,98 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 5 failing, 5 passing (Total: 10)
+
+Execution Times:
+  - Test Case Gathering: 1.6148 seconds
+  - Repair: 513.5094 seconds
+  - Evaluation: 106.0148 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.9491
+  - Best F1 Score: 0.7813
+  - Total Patches Found: 2
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_1(10)[0.95]
+Found 1 equivalent patches.
+Mutations: [Delete(3), InsertBoth(1,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [22/50]
+NOW FAILING: [28/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.6410256410256411
+RECALL: 1.0
+ACCURACY: 0.72
+F1 SCORE: 0.7812500000000001
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,10 @@
+ def middle(x, y, z):
+     m = z
++    m = x
+     if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        pass
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(5)[0.93]
+Found 1 equivalent patches.
+Mutations: [Replace(2,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,4 @@
+ def middle(x, y, z):
+     m = z
+-    if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    m = x
++    return m
+
+____________________________________________________________________________________________________
+

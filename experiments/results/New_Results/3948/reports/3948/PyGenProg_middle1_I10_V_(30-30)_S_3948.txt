@@ -1,0 +1,263 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 30 failing, 30 passing (Total: 60)
+
+Execution Times:
+  - Test Case Gathering: 3.9810 seconds
+  - Repair: 2585.8887 seconds
+  - Evaluation: 279.9585 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.9273
+  - Best F1 Score: 0.7143
+  - Total Patches Found: 33
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_1(4)[0.93]
+Found 30 equivalent patches.
+Mutations: [InsertBoth(11,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(5)[0.93]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(11,10), Replace(22,14), Replace(20,21)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,14 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    print(middle.middle(*list(map(int, args))))
+     print(middle.middle(*list(map(int, args))))
+ 
+-
+-if __name__ == "__main__":
+-    main()
++def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
++    if stdout is not None:
++        sys.stdout = stdout
++    if stderr is not None:
++        sys.stderr = stderr
++    args = args or sys.argv[1:]
++    assert len(args) == 3, 'wrong number of arguments'
++    print(middle.middle(*list(map(int, args))))
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(5)[0.93]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(11,10), Replace(22,14), Delete(21)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,14 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
+-    print(middle.middle(*list(map(int, args))))
++    assert len(args) == 3, 'wrong number of arguments'
++    pass
+ 
+-
+-if __name__ == "__main__":
+-    main()
++def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
++    if stdout is not None:
++        sys.stdout = stdout
++    if stderr is not None:
++        sys.stderr = stderr
++    args = args or sys.argv[1:]
++    assert len(args) == 3, 'wrong number of arguments'
++    print(middle.middle(*list(map(int, args))))
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(5)[0.93]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(11,10), Replace(22,14), Replace(15,0)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,25 @@
+ import sys
+-
+ import middle
+ 
++def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
++
++    def middle(x, y, z):
++        m = z
++        if y < z:
++            if x < y:
++                m = y
++            elif x < z:
++                m = y
++        elif x > y:
++            m = y
++        elif x > z:
++            m = x
++        return m
++    if stderr is not None:
++        sys.stderr = stderr
++    args = args or sys.argv[1:]
++    assert len(args) == 3, 'wrong number of arguments'
++    print(middle.middle(*list(map(int, args))))
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +27,5 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
+-    print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++    assert len(args) == 3, 'wrong number of arguments'
++    print(middle.middle(*list(map(int, args))))
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    m = x
++    return m
+
+____________________________________________________________________________________________________
+
