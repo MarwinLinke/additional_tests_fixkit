@@ -14,7 +14,6 @@ from fixkit.fitness.engine import Tests4PySystemTestEngine, Tests4PySystemTestSe
 from fixkit.repair.patch import get_patch
 from fixkit.fitness.metric import GenProgFitness
 from fixkit.localization.t4p import Tests4PySystemtestsLocalization
-from fixkit.localization.modifier import SigmoidModifier, TopRankModifier, TopEqualRankModifier, DefaultModifier
 from fixkit.repair import GeneticRepair
 from fixkit.candidate import GeneticCandidate
 from fixkit.repair.pyae import PyAE
@@ -198,16 +197,20 @@ class EvaluationPipeline():
         if self.approach != PyAE:
             params["max_generations"] = self.fixKit_iterations
 
+        # Special pysnooper excludes because they caused errors when mutating.
+        pysnooper_excludes = ["pysnooper/__init__.py", "pysnooper/pycompat.py"]
+
         approach = self.approach.from_source(
             src=Path("tmp", self.subject.get_identifier()),
-            excludes=DEFAULT_EXCLUDES,
+            excludes=DEFAULT_EXCLUDES + pysnooper_excludes,
             localization=Tests4PySystemtestsLocalization(
                 src=Path("tmp", self.subject.get_identifier()),
                 events=["line"],
                 predicates=["line"],
                 metric="Ochiai",
                 out="rep",
-                tests = self.localization_tests
+                tests = self.localization_tests,
+                excluded_files=DEFAULT_EXCLUDES + pysnooper_excludes
             ),
             out="rep",
             is_t4p=True,
@@ -215,7 +218,6 @@ class EvaluationPipeline():
             failing_tests = self.validation_failing,
             passing_tests = self.validation_passing,
             serial = False,
-            modifier = TopEqualRankModifier(),
             **params
         )
 

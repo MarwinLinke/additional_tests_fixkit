@@ -8,15 +8,18 @@ from debugging_benchmark.markup.markup import MarkupBenchmarkRepository
 from debugging_benchmark.expression.expression import ExpressionBenchmarkRepository
 from debugging_benchmark.tests4py_benchmark.repository import PysnooperBenchmarkRepository
 from debugging_benchmark.tests4py_benchmark.repository import CookiecutterBenchmarkRepository
+from debugging_benchmark.tests4py_benchmark.repository import Tests4PyBenchmarkRepository
 from debugging_framework.benchmark.repository import BenchmarkProgram
 from fixkit.repair.pygenprog import PyGenProg
 from fixkit.repair import GeneticRepair
+from fixkit.localization.modifier import SigmoidModifier, TopRankModifier, TopEqualRankModifier, DefaultModifier
 
 
 APPROACHES: Dict[str, Tuple[Type[GeneticRepair], Dict[str, float]]] = {
     "GENPROG": (
         PyGenProg,
         {
+            "modifier": TopEqualRankModifier(),
             "population_size": 40,
             "w_mut": 0.2,
             "workers": 32,
@@ -126,9 +129,7 @@ SUBJECT_PARAMS = {
         "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
     },
 
-    "COOKIECUTTER_3": {
-        "SUBJECT": "COOKIECUTTER",
-        "BUG_ID": 3,
+    "DEFAULT": {
         "ITERATIONS": [10],
         "NUM_BASELINE_TESTS": [(1, 1), (1, 10)],
         "NUM_ADDITIONAL_TESTS": [(5, 5), (10, 10), (30, 30), (50, 50)],
@@ -162,10 +163,28 @@ def get_benchmark_program(subject: str, bug_id: int) -> BenchmarkProgram:
     subject_data = SUBJECTS[subject][bug_id]
     _, benchmark_callable = subject_data
     benchmark_program = benchmark_callable()
-
     return benchmark_program
     
 
+def get_subject_params(subject: str) -> Dict:
+    if subject in SUBJECT_PARAMS:
+        return SUBJECT_PARAMS[subject]
+    else:
+
+        subject_id = subject.split("_")
+        subject_name = subject_id[0]
+        bug_id = int(subject_id[1])
+
+        if subject_name not in SUBJECTS:
+            raise ValueError(f"Subject of name {subject_name} was not found in valid subjects.")
+        
+        if bug_id not in SUBJECTS[subject_name]:
+            raise ValueError(f"The bug with the id {bug_id} was not found for {subject_name}.")
+
+        identifier = {"SUBJECT": subject_name, "BUG_ID": bug_id}
+        params = SUBJECT_PARAMS["DEFAULT"]
+        params.update(identifier)
+        return params
 
 def almost_equal(value, target, delta=0.0001):
     return abs(value - target) < delta

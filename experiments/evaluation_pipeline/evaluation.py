@@ -6,7 +6,8 @@ import logging
 import numpy as np
 import sys
 
-from data import get_evaluation_data, get_benchmark_program, SUBJECT_PARAMS, VARIANTS
+from fixkit.logger import debug_logger
+from data import get_evaluation_data, get_benchmark_program, get_subject_params, VARIANTS
 from pipeline import EvaluationPipeline
 from pre_generator import PreGenerator
 
@@ -120,34 +121,36 @@ def _generate_repair_tests(subject: str, seed: int, num_failing: int = 50, num_p
     Generates and saves test cases for repair.
     """
     path = Path("repair_tests")
-    benchmark_program = get_benchmark_program(SUBJECT_PARAMS[subject]["SUBJECT"], SUBJECT_PARAMS[subject]["BUG_ID"])
+    params = get_subject_params(subject)
+    benchmark_program = get_benchmark_program(params["SUBJECT"], params["BUG_ID"])
     pre_generator = PreGenerator(subject, benchmark_program, num_failing, num_passing, path, seed)
     return pre_generator.run()
 
 
-def _generate_evaluation_tests(subject: str, seed: int):
+def _generate_evaluation_tests(subject: str, seed: int, num_failing: int = 50, num_passing: int = 50):
     """
     Generates and saves test cases for evaluation.
     """
     path = Path("evaluation_tests")
-    benchmark_program = get_benchmark_program(SUBJECT_PARAMS[subject]["SUBJECT"], SUBJECT_PARAMS[subject]["BUG_ID"])
-    pre_generator = PreGenerator(subject, benchmark_program, 50, 50, path, seed)
+    params = get_subject_params(subject)
+    benchmark_program = get_benchmark_program(params["SUBJECT"], params["BUG_ID"])
+    pre_generator = PreGenerator(subject, benchmark_program, num_failing, num_passing, path, seed)
     return pre_generator.run()
 
 
 def _evaluate_subject(subject: str, seed: int, csv_file: Path, repair_tests_path: Path, evaluation_tests_path: Path):
     """
-    Evaluates 26 combinations of parameters for the subject.
+    Evaluates specified configurations in data.py for the subject.
     """
     print(f"Starting the evaluation of {subject}.")
 
-    param = SUBJECT_PARAMS[subject]
-    project_name = param["SUBJECT"]
-    bug_id = param["BUG_ID"]
-    for iteration in param["ITERATIONS"]:
+    params = get_subject_params(subject)
+    project_name = params["SUBJECT"]
+    bug_id = params["BUG_ID"]
+    for iteration in params["ITERATIONS"]:
         for variant in VARIANTS.items():
             variant_name, num_tests_version = variant
-            for num_tests in param[num_tests_version]:             
+            for num_tests in params[num_tests_version]:             
                 num_failing, num_passing = num_tests
                 _try_evaluate(project_name, bug_id, variant_name, iteration, num_failing, num_passing, repair_tests_path, evaluation_tests_path, csv_file, seed)
 
@@ -172,8 +175,8 @@ def evaluate_all(index):
     if index >= len(SEEDS) or index < 0:
         raise ValueError(f"Index for seeds must be in valid range: [0, {len(SEEDS) - 1}]")
 
-    subjects_to_evaluate = ["MIDDLE_1", "MIDDLE_2", "CALCULATOR_1", "EXPRESSION_1", "MARKUP_1", "MARKUP_2"]
-    
+    subjects_to_evaluate = ["PYSNOOPER_2, PYSNOOPER_3"]
+
     shutil.rmtree(REPAIR_TESTS, ignore_errors=True)
     shutil.rmtree(EVAL_TESTS, ignore_errors=True)
 
@@ -190,18 +193,17 @@ def evaluate_all(index):
 def debug_evaluation():
     
     logging.getLogger("tests4py").propagate = False
+    debug_logger()
 
     seed_index = 0
     subject = "MIDDLE"
     bug_id = 1
-    repair_tests_path = _generate_repair_tests(f"{subject}_{bug_id}", REPAIR_TESTS_SEEDS[seed_index], 50, 50)
-    eval_tests_path = _generate_evaluation_tests(f"{subject}_{bug_id}", EVAL_TESTS_SEED)
-    #repair_tests_path = Path(REPAIR_TESTS) / "PYSNOOPER_2_50-50_2655"
-    #eval_tests_path = Path(EVAL_TESTS) / "PYSNOOPER_2_50-50_2655"
+    repair_tests_path = _generate_repair_tests(f"{subject}_{bug_id}", REPAIR_TESTS_SEEDS[seed_index], 10, 10)
+    eval_tests_path = _generate_evaluation_tests(f"{subject}_{bug_id}", EVAL_TESTS_SEED, 10, 10)
     csv = "seed_test.csv"
     EvaluationPipeline.write_csv_header(Path(OUT) / "csv_files", csv)
     for _ in range(10):
-        _evaluate(subject, bug_id, BASELINE, 10, 1, 1, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
+        _evaluate(subject, bug_id, BASELINE, 10, 1, 10, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
 
 
 def clean_up():
