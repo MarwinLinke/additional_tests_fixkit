@@ -1,0 +1,109 @@
+APPROACH: PyGenProg
+SUBJECT: pysnooper_3
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 50 failing, 50 passing (Total: 100)
+  - (Enhanced) Validation: 50 failing, 50 passing (Total: 100)
+
+Execution Times:
+  - Test Case Gathering: 1.2394 seconds
+  - Repair: 379.5836 seconds
+  - Evaluation: 49.5234 seconds
+
+Results:
+  - Valid Patch Found: True
+  - Best Fitness: 1.0000
+  - Best F1 Score: 1.0000
+  - Total Patches Found: 1
+  - Generations Completed: 5/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/pysnooper_3(2)[1.00]
+Found 1 equivalent patches.
+Mutations: [Delete(29)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 1.0
+RECALL: 1.0
+ACCURACY: 1.0
+F1 SCORE: 1.0
+---------------------------------------
+--- pysnooper/pysnooper.py
++++ pysnooper/pysnooper.py
+@@ -1,6 +1,3 @@
+-# Copyright 2019 Ram Rachum.
+-# This program is distributed under the MIT license.
+-
+ import sys
+ import os
+ import inspect
+@@ -8,34 +5,31 @@
+ import datetime as datetime_module
+ import re
+ import collections
+-
+ import decorator
+-
+ from . import utils
+ from . import pycompat
+ from .tracer import Tracer
+ 
+-
+ def get_write_function(output):
+     if output is None:
++
+         def write(s):
+             stderr = sys.stderr
+             stderr.write(s)
+     elif isinstance(output, (pycompat.PathLike, str)):
++
+         def write(s):
+             with open(output_path, 'a') as output_file:
+                 output_file.write(s)
+     else:
+         assert isinstance(output, utils.WritableStream)
++
+         def write(s):
+             output.write(s)
+-
+     return write
+ 
+-
+-
+ def snoop(output=None, variables=(), depth=1, prefix=''):
+-    '''
++    """
+     Snoop on the function, writing everything it's doing to stderr.
+ 
+     This is useful for debugging.
+@@ -61,16 +55,11 @@
+ 
+         @pysnooper.snoop(prefix='ZZZ ')
+ 
+-    '''
++    """
+     write = get_write_function(output)
++
+     @decorator.decorator
+     def decorate(function, *args, **kwargs):
+         target_code_object = function.__code__
+-        with Tracer(target_code_object=target_code_object,
+-                    write=write, variables=variables,
+-                    depth=depth, prefix=prefix):
+-            return function(*args, **kwargs)
+-
+-    return decorate
+-
+-
++        pass
++    return decorate
+
+____________________________________________________________________________________________________
+

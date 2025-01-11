@@ -1,0 +1,394 @@
+APPROACH: PyGenProg
+SUBJECT: pysnooper_2
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 1 passing (Total: 2)
+  - (Baseline) Validation: 1 failing, 1 passing (Total: 2)
+
+Execution Times:
+  - Test Case Gathering: 1.9000 seconds
+  - Repair: 387.7595 seconds
+  - Evaluation: 56.2267 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.0909
+  - Best F1 Score: 0.0000
+  - Total Patches Found: 2
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/pysnooper_2(5)[0.09]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/pysnooper_2(4)[0.02]
+Found 1 equivalent patches.
+Mutations: [Delete(29)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.1
+F1 SCORE: 0.0
+---------------------------------------
+--- pysnooper/tracer.py
++++ pysnooper/tracer.py
+@@ -1,6 +1,3 @@
+-# Copyright 2019 Ram Rachum and collaborators.
+-# This program is distributed under the MIT license.
+-
+ import functools
+ import inspect
+ import opcode
+@@ -11,34 +8,25 @@
+ import itertools
+ import threading
+ import traceback
+-
+-from .variables import CommonVariable, Exploding, BaseVariable
++pass
+ from . import utils, pycompat
+-
+-
+ ipython_filename_pattern = re.compile('^<ipython-input-([0-9]+)-.*>$')
+-
+ 
+ def get_local_reprs(frame, watch=()):
+     code = frame.f_code
+     vars_order = code.co_varnames + code.co_cellvars + code.co_freevars + tuple(frame.f_locals.keys())
+-
+     result_items = [(key, utils.get_shortish_repr(value)) for key, value in frame.f_locals.items()]
+     result_items.sort(key=lambda key_value: vars_order.index(key_value[0]))
+     result = collections.OrderedDict(result_items)
+-
+     for variable in watch:
+         result.update(sorted(variable.items(frame)))
+     return result
+ 
+-
+ class UnavailableSource(object):
++
+     def __getitem__(self, i):
+         return u'SOURCE IS UNAVAILABLE'
+-
+-
+ source_cache = {}
+-
+ 
+ def get_source_from_frame(frame):
+     globs = frame.f_globals or {}
+@@ -50,7 +38,6 @@
+     except KeyError:
+         pass
+     loader = globs.get('__loader__')
+-
+     source = None
+     if hasattr(loader, 'get_source'):
+         try:
+@@ -66,8 +53,7 @@
+             try:
+                 import IPython
+                 ipython_shell = IPython.get_ipython()
+-                ((_, _, source_chunk),) = ipython_shell.history_manager. \
+-                                  get_range(0, entry_number, entry_number + 1)
++                (_, _, source_chunk), = ipython_shell.history_manager.get_range(0, entry_number, entry_number + 1)
+                 source = source_chunk.splitlines()
+             except Exception:
+                 pass
+@@ -79,38 +65,28 @@
+                 pass
+     if source is None:
+         source = UnavailableSource()
+-
+-    # If we just read the source from a file, or if the loader did not
+-    # apply tokenize.detect_encoding to decode the source into a
+-    # string, then we should do that ourselves.
+     if isinstance(source[0], bytes):
+         encoding = 'ascii'
+         for line in source[:2]:
+-            # File coding may be specified. Match pattern from PEP-263
+-            # (https://www.python.org/dev/peps/pep-0263/)
+-            match = re.search(br'coding[:=]\s*([-\w.]+)', line)
++            match = re.search(b'coding[:=]\\s*([-\\w.]+)', line)
+             if match:
+                 encoding = match.group(1).decode('ascii')
+                 break
+-        source = [pycompat.text_type(sline, encoding, 'replace') for sline in
+-                  source]
+-
++        source = [pycompat.text_type(sline, encoding, 'replace') for sline in source]
+     source_cache[cache_key] = source
+     return source
+ 
+-
+ def get_write_function(output, overwrite):
+     is_path = isinstance(output, (pycompat.PathLike, str))
+-    if overwrite and not is_path:
+-        raise Exception('`overwrite=True` can only be used when writing '
+-                        'content to file.')
++    if overwrite and (not is_path):
++        raise Exception('`overwrite=True` can only be used when writing content to file.')
+     if output is None:
++
+         def write(s):
+             stderr = sys.stderr
+             try:
+                 stderr.write(s)
+             except UnicodeEncodeError:
+-                # God damn Python 2
+                 stderr.write(utils.shitcode(s))
+     elif is_path:
+         return FileWriter(output, overwrite).write
+@@ -123,8 +99,8 @@
+             output.write(s)
+     return write
+ 
+-
+ class FileWriter(object):
++
+     def __init__(self, path, overwrite):
+         self.path = pycompat.text_type(path)
+         self.overwrite = overwrite
+@@ -133,13 +109,10 @@
+         with open(self.path, 'w' if self.overwrite else 'a') as output_file:
+             output_file.write(s)
+         self.overwrite = False
+-
+-
+ thread_global = threading.local()
+ 
+-
+ class Tracer:
+-    '''
++    """
+     Snoop on the function, writing everything it's doing to stderr.
+ 
+     This is useful for debugging.
+@@ -176,26 +149,11 @@
+ 
+         @pysnooper.snoop(thread_info=True)
+ 
+-    '''
+-    def __init__(
+-            self,
+-            output=None,
+-            watch=(),
+-            watch_explode=(),
+-            depth=1,
+-            prefix='',
+-            overwrite=False,
+-            thread_info=False,
+-    ):
++    """
++
++    def __init__(self, output=None, watch=(), watch_explode=(), depth=1, prefix='', overwrite=False, thread_info=False):
+         self._write = get_write_function(output, overwrite)
+-
+-        self.watch = [
+-            v if isinstance(v, BaseVariable) else CommonVariable(v)
+-            for v in utils.ensure_tuple(watch)
+-         ] + [
+-             v if isinstance(v, BaseVariable) else Exploding(v)
+-             for v in utils.ensure_tuple(watch_explode)
+-        ]
++        self.watch = [v if isinstance(v, BaseVariable) else CommonVariable(v) for v in utils.ensure_tuple(watch)] + [v if isinstance(v, BaseVariable) else Exploding(v) for v in utils.ensure_tuple(watch_explode)]
+         self.frame_to_local_reprs = {}
+         self.depth = depth
+         self.prefix = prefix
+@@ -217,7 +175,7 @@
+         @functools.wraps(function)
+         def generator_wrapper(*args, **kwargs):
+             gen = function(*args, **kwargs)
+-            method, incoming = gen.send, None
++            method, incoming = (gen.send, None)
+             while True:
+                 with self:
+                     try:
+@@ -225,12 +183,10 @@
+                     except StopIteration:
+                         return
+                 try:
+-                    method, incoming = gen.send, (yield outgoing)
++                    method, incoming = (gen.send, (yield outgoing))
+                 except Exception as e:
+-                    method, incoming = gen.throw, e
+-
++                    method, incoming = (gen.throw, e)
+         if pycompat.iscoroutinefunction(function):
+-            # return decorate(function, coroutine_wrapper)
+             raise NotImplementedError
+         elif inspect.isgeneratorfunction(function):
+             return generator_wrapper
+@@ -246,7 +202,6 @@
+         if not self._is_internal_frame(calling_frame):
+             calling_frame.f_trace = self.trace
+             self.target_frames.add(calling_frame)
+-
+         stack = self.thread_local.__dict__.setdefault('original_trace_functions', [])
+         stack.append(sys.gettrace())
+         sys.settrace(self.trace)
+@@ -263,24 +218,12 @@
+ 
+     def set_thread_info_padding(self, thread_info):
+         current_thread_len = len(thread_info)
+-        self.thread_info_padding = max(self.thread_info_padding,
+-                                       current_thread_len)
++        self.thread_info_padding = max(self.thread_info_padding, current_thread_len)
+         return thread_info.ljust(self.thread_info_padding)
+ 
+-
+     def trace(self, frame, event, arg):
+-
+-        ### Checking whether we should trace this line: #######################
+-        #                                                                     #
+-        # We should trace this line either if it's in the decorated function,
+-        # or the user asked to go a few levels deeper and we're within that
+-        # number of levels deeper.
+-
+         if not (frame.f_code in self.target_codes or frame in self.target_frames):
+             if self.depth == 1:
+-                # We did the most common and quickest check above, because the
+-                # trace function runs so incredibly often, therefore it's
+-                # crucial to hyper-optimize it for the common case.
+                 return None
+             elif self._is_internal_frame(frame):
+                 return None
+@@ -294,100 +237,52 @@
+                         break
+                 else:
+                     return None
+-
+         thread_global.__dict__.setdefault('depth', -1)
+         if event == 'call':
+             thread_global.depth += 1
+         indent = ' ' * 4 * thread_global.depth
+-
+-        #                                                                     #
+-        ### Finished checking whether we should trace this line. ##############
+-
+-        ### Reporting newish and modified variables: ##########################
+-        #                                                                     #
+         old_local_reprs = self.frame_to_local_reprs.get(frame, {})
+-        self.frame_to_local_reprs[frame] = local_reprs = \
+-                                       get_local_reprs(frame, watch=self.watch)
+-
+-        newish_string = ('Starting var:.. ' if event == 'call' else
+-                                                            'New var:....... ')
+-
++        self.frame_to_local_reprs[frame] = local_reprs = get_local_reprs(frame, watch=self.watch)
++        newish_string = 'Starting var:.. ' if event == 'call' else 'New var:....... '
+         for name, value_repr in local_reprs.items():
+             if name not in old_local_reprs:
+-                self.write('{indent}{newish_string}{name} = {value_repr}'.format(
+-                                                                       **locals()))
++                self.write('{indent}{newish_string}{name} = {value_repr}'.format(**locals()))
+             elif old_local_reprs[name] != value_repr:
+-                self.write('{indent}Modified var:.. {name} = {value_repr}'.format(
+-                                                                   **locals()))
+-
+-        #                                                                     #
+-        ### Finished newish and modified variables. ###########################
+-
++                self.write('{indent}Modified var:.. {name} = {value_repr}'.format(**locals()))
+         now_string = datetime_module.datetime.now().time().isoformat()
+         line_no = frame.f_lineno
+         source_line = get_source_from_frame(frame)[line_no - 1]
+-        thread_info = ""
++        thread_info = ''
+         if self.thread_info:
+             current_thread = threading.current_thread()
+-            thread_info = "{ident}-{name} ".format(
+-                ident=current_thread.ident, name=current_thread.getName())
++            thread_info = '{ident}-{name} '.format(ident=current_thread.ident, name=current_thread.getName())
+         thread_info = self.set_thread_info_padding(thread_info)
+-
+-        ### Dealing with misplaced function definition: #######################
+-        #                                                                     #
+         if event == 'call' and source_line.lstrip().startswith('@'):
+-            # If a function decorator is found, skip lines until an actual
+-            # function definition is found.
+             for candidate_line_no in itertools.count(line_no):
+                 try:
+-                    candidate_source_line = \
+-                            get_source_from_frame(frame)[candidate_line_no - 1]
++                    candidate_source_line = get_source_from_frame(frame)[candidate_line_no - 1]
+                 except IndexError:
+-                    # End of source file reached without finding a function
+-                    # definition. Fall back to original source line.
+                     break
+-
+                 if candidate_source_line.lstrip().startswith('def'):
+-                    # Found the def line!
+                     line_no = candidate_line_no
+                     source_line = candidate_source_line
+                     break
+-        #                                                                     #
+-        ### Finished dealing with misplaced function definition. ##############
+-
+-        # If a call ends due to an exception, we still get a 'return' event
+-        # with arg = None. This seems to be the only way to tell the difference
+-        # https://stackoverflow.com/a/12800909/2482744
+         code_byte = frame.f_code.co_code[frame.f_lasti]
+         if not isinstance(code_byte, int):
+             code_byte = ord(code_byte)
+-        ended_by_exception = (
+-                event == 'return'
+-                and arg is None
+-                and (opcode.opname[code_byte]
+-                     not in ('RETURN_VALUE', 'YIELD_VALUE'))
+-        )
+-
++        ended_by_exception = event == 'return' and arg is None and (opcode.opname[code_byte] not in ('RETURN_VALUE', 'YIELD_VALUE'))
+         if ended_by_exception:
+-            self.write('{indent}Call ended by exception'.
+-                       format(**locals()))
++            self.write('{indent}Call ended by exception'.format(**locals()))
+         else:
+-            self.write(u'{indent}{now_string} {thread_info}{event:9} '
+-                       u'{line_no:4} {source_line}'.format(**locals()))
+-
++            self.write(u'{indent}{now_string} {thread_info}{event:9} {line_no:4} {source_line}'.format(**locals()))
+         if event == 'return':
+             del self.frame_to_local_reprs[frame]
+             thread_global.depth -= 1
+-
+             if not ended_by_exception:
+                 return_value_repr = utils.get_shortish_repr(arg)
+-                self.write('{indent}Return value:.. {return_value_repr}'.
+-                           format(**locals()))
+-
++                self.write('{indent}Return value:.. {return_value_repr}'.format(**locals()))
+         if event == 'exception':
+             exception = '\n'.join(traceback.format_exception_only(*arg[:2])).strip()
+             exception = utils.truncate(exception, utils.MAX_EXCEPTION_LENGTH)
+-            self.write('{indent}{exception}'.
+-                       format(**locals()))
+-
+-        return self.trace
++            self.write('{indent}{exception}'.format(**locals()))
++        return self.trace
+
+____________________________________________________________________________________________________
+
