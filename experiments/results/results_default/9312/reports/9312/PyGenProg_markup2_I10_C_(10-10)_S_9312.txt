@@ -1,0 +1,70 @@
+APPROACH: PyGenProg
+SUBJECT: markup_2
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 10 failing, 10 passing (Total: 20)
+  - (Enhanced) Validation: 10 failing, 10 passing (Total: 20)
+
+Execution Times:
+  - Test Case Gathering: 2.4665 seconds
+  - Repair: 248.1284 seconds
+  - Evaluation: 42.9172 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.7273
+  - Best F1 Score: 0.8235
+  - Total Patches Found: 1
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_2(12)[0.73]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(3,8), InsertBoth(9,2)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [35/50]
+STILL FAILING: [15/50]
+PRECISION: 1.0
+RECALL: 0.7
+ACCURACY: 0.85
+F1 SCORE: 0.8235294117647058
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,17 @@
+ def remove_html_markup(s):
+     tag = True
+     quote = False
+-    out = ""
+-
++    out = ''
++    tag = False
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif (c == '"' or c == "'") and tag:  # <-- FIX
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        else:
++            quote = False
++            if (c == '"' or c == "'") and tag:
++                quote = not quote
++            elif not tag:
++                out = out + c
++    return out
+
+____________________________________________________________________________________________________
+

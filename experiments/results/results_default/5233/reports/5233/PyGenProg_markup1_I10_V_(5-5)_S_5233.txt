@@ -1,0 +1,434 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 5 failing, 5 passing (Total: 10)
+
+Execution Times:
+  - Test Case Gathering: 2.0936 seconds
+  - Repair: 317.3375 seconds
+  - Evaluation: 63.3178 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.1673
+  - Best F1 Score: 0.1667
+  - Total Patches Found: 38
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_1(13)[0.17]
+Found 16 equivalent patches.
+Mutations: [Delete(4)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,6 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
+-    for c in s:
+-        if c == "<" and not quote:
+-            tag = True
+-        elif c == ">" and not quote:
+-            tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++    out = ''
++    pass
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(9)[0.17]
+Found 5 equivalent patches.
+Mutations: [Replace(11,13)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        else:
++            return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(9)[0.17]
+Found 2 equivalent patches.
+Mutations: [Replace(9,1)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,12 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        else:
++            tag = False
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(13)[0.17]
+Found 2 equivalent patches.
+Mutations: [Delete(5)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,7 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
+-            tag = True
+-        elif c == ">" and not quote:
+-            tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        pass
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(13)[0.17]
+Found 2 equivalent patches.
+Mutations: [Delete(9)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,12 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        else:
++            pass
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(10)[0.17]
+Found 4 equivalent patches.
+Mutations: [Delete(7)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,10 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
+-            tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++        else:
++            pass
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(9)[0.17]
+Found 1 equivalent patches.
+Mutations: [Replace(1,11)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,15 @@
+ def remove_html_markup(s):
+-    tag = False
++    if not tag:
++        out = out + c
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(7)[0.17]
+Found 2 equivalent patches.
+Mutations: [Delete(3)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    pass
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(11)[0.17]
+Found 2 equivalent patches.
+Mutations: [Delete(12)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,14 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+-            out = out + c
+-
+-    return out
++            pass
++    return out
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/markup_1(10)[0.17]
+Found 2 equivalent patches.
+Mutations: [Replace(4,6)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [12/50]
+NOW FAILING: [38/50]
+NOW PASSING: [8/50]
+STILL FAILING: [42/50]
+PRECISION: 0.17391304347826086
+RECALL: 0.16
+ACCURACY: 0.2
+F1 SCORE: 0.16666666666666666
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,6 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
+-    for c in s:
+-        if c == "<" and not quote:
+-            tag = True
+-        elif c == ">" and not quote:
+-            tag = False
+-        elif c == '"' or c == "'" and tag:
+-            quote = not quote
+-        elif not tag:
+-            out = out + c
+-
+-    return out
++    out = ''
++    tag = True
++    return out
+
+____________________________________________________________________________________________________
+

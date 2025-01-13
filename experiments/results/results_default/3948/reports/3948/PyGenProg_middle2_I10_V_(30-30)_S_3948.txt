@@ -1,0 +1,98 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 30 failing, 30 passing (Total: 60)
+
+Execution Times:
+  - Test Case Gathering: 1.5515 seconds
+  - Repair: 275.2336 seconds
+  - Evaluation: 42.0406 seconds
+
+Results:
+  - Valid Patch Found: True
+  - Best Fitness: 1.0000
+  - Best F1 Score: 1.0000
+  - Total Patches Found: 16
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_2(13)[1.00]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(5,9)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 1.0
+RECALL: 1.0
+ACCURACY: 1.0
+F1 SCORE: 1.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,10 +3,10 @@
+         if x < y:
+             return y
+         elif x < z:
++            return x
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(12)[0.98]
+Found 15 equivalent patches.
+Mutations: [InsertBoth(4,9)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [40/50]
+NOW FAILING: [10/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.8333333333333334
+RECALL: 1.0
+ACCURACY: 0.9
+F1 SCORE: 0.9090909090909091
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,12 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
++        else:
+             return x
+-    return z
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+

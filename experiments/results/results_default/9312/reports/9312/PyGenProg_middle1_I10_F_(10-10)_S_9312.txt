@@ -1,0 +1,339 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 10 failing, 10 passing (Total: 20)
+  - (Baseline) Validation: 1 failing, 10 passing (Total: 11)
+
+Execution Times:
+  - Test Case Gathering: 0.9727 seconds
+  - Repair: 246.4618 seconds
+  - Evaluation: 154.8001 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.0909
+  - Best F1 Score: 0.0000
+  - Total Patches Found: 9
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_1(5)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(19,17)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,15 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+     if stderr is not None:
+         sys.stderr = stderr
++    if stderr is not None:
++        sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(11)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(11,21)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
+     return m
++    print(middle.middle(*list(map(int, args))))
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(8)[0.09]
+Found 1 equivalent patches.
+Mutations: [Delete(17)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,17 +1,12 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+         sys.stdout = stdout
+-    if stderr is not None:
+-        sys.stderr = stderr
++    pass
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(7)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(21,17)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/cli.py
++++ src/middle/cli.py
+@@ -1,7 +1,5 @@
+ import sys
+-
+ import middle
+-
+ 
+ def main(*args: str, stdout=sys.stdout, stderr=sys.stderr):
+     if stdout is not None:
+@@ -9,9 +7,9 @@
+     if stderr is not None:
+         sys.stderr = stderr
+     args = args or sys.argv[1:]
+-    assert len(args) == 3, "wrong number of arguments"
++    assert len(args) == 3, 'wrong number of arguments'
++    if stderr is not None:
++        sys.stderr = stderr
+     print(middle.middle(*list(map(int, args))))
+-
+-
+-if __name__ == "__main__":
+-    main()
++if __name__ == '__main__':
++    main()
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(5)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(3,11)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(4)[0.09]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(6)[0.09]
+Found 1 equivalent patches.
+Mutations: [Replace(2,2)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,8 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(6)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(6,8)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+             m = y
+-        elif x > z:
+-            m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(16)[0.09]
+Found 1 equivalent patches.
+Mutations: [Replace(6,12)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [49/50]
+NOW FAILING: [1/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.49
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,10 +4,9 @@
+         if x < y:
+             m = y
+         elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++            import sys
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+

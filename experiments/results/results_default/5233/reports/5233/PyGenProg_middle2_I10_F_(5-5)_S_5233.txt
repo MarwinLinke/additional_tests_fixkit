@@ -1,0 +1,61 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 5 failing, 5 passing (Total: 10)
+  - (Baseline) Validation: 1 failing, 10 passing (Total: 11)
+
+Execution Times:
+  - Test Case Gathering: 0.9467 seconds
+  - Repair: 371.4606 seconds
+  - Evaluation: 45.8725 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.9582
+  - Best F1 Score: 0.8130
+  - Total Patches Found: 9
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_2(10)[0.96]
+Found 9 equivalent patches.
+Mutations: [Replace(2,9)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [27/50]
+NOW FAILING: [23/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.684931506849315
+RECALL: 1.0
+ACCURACY: 0.77
+F1 SCORE: 0.8130081300813007
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,12 +1,8 @@
+ def middle(x, y, z):
+     if y < z:
+-        if x < y:
+-            return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        return x
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+

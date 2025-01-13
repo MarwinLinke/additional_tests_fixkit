@@ -1,0 +1,79 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 10 failing, 10 passing (Total: 20)
+
+Execution Times:
+  - Test Case Gathering: 2.2318 seconds
+  - Repair: 390.9200 seconds
+  - Evaluation: 36.8896 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.1745
+  - Best F1 Score: 0.1728
+  - Total Patches Found: 1
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_1(7)[0.17]
+Found 1 equivalent patches.
+Mutations: [Replace(1,0)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [26/50]
+NOW FAILING: [24/50]
+NOW PASSING: [7/50]
+STILL FAILING: [43/50]
+PRECISION: 0.22580645161290322
+RECALL: 0.14
+ACCURACY: 0.33
+F1 SCORE: 0.1728395061728395
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,28 @@
+ def remove_html_markup(s):
+-    tag = False
++
++    def remove_html_markup(s):
++        tag = False
++        quote = False
++        out = ''
++        for c in s:
++            if c == '<' and (not quote):
++                tag = True
++            elif c == '>' and (not quote):
++                tag = False
++            elif c == '"' or (c == "'" and tag):
++                quote = not quote
++            elif not tag:
++                out = out + c
++        return out
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+

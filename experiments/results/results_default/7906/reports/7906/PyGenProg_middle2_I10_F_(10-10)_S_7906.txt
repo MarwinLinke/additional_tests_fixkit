@@ -1,0 +1,312 @@
+APPROACH: PyGenProg
+SUBJECT: middle_2
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 10 failing, 10 passing (Total: 20)
+  - (Baseline) Validation: 1 failing, 10 passing (Total: 11)
+
+Execution Times:
+  - Test Case Gathering: 0.9158 seconds
+  - Repair: 334.0532 seconds
+  - Evaluation: 69.3620 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.0909
+  - Best F1 Score: 0.0000
+  - Total Patches Found: 10
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_2(7)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(5,5)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,9 +4,9 @@
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+             return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(7)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(5,7)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -4,9 +4,9 @@
+             return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+             return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(10)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(4,0)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,23 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        else:
++            if x < z:
++                return y
++
++            def middle(x, y, z):
++                if y < z:
++                    if x < y:
++                        return y
++                    elif x < z:
++                        return y
++                elif x > y:
++                    return y
++                elif x > z:
++                    return x
++                return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(8)[0.09]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(9)[0.09]
+Found 1 equivalent patches.
+Mutations: [Replace(4,2)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,12 @@
+     if y < z:
+         if x < y:
+             return y
++        elif x < y:
++            return y
+         elif x < z:
+             return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(5)[0.09]
+Found 1 equivalent patches.
+Mutations: [Delete(4)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [49/50]
+NOW FAILING: [1/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.49
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,10 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        else:
++            pass
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(11)[0.09]
+Found 3 equivalent patches.
+Mutations: [Delete(5)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [49/50]
+NOW FAILING: [1/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.49
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -3,10 +3,9 @@
+         if x < y:
+             return y
+         elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++            pass
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_2(8)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(4,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [49/50]
+NOW FAILING: [1/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.49
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -2,11 +2,12 @@
+     if y < z:
+         if x < y:
+             return y
+-        elif x < z:
+-            return y
+-    else:
+-        if x > y:
+-            return y
+-        elif x > z:
+-            return x
+-    return z
++        else:
++            return z
++            if x < z:
++                return y
++    elif x > y:
++        return y
++    elif x > z:
++        return x
++    return z
+
+____________________________________________________________________________________________________
+
