@@ -1,0 +1,181 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 10 passing (Total: 11)
+  - (Enhanced) Validation: 50 failing, 50 passing (Total: 100)
+
+Execution Times:
+  - Test Case Gathering: 0.8135 seconds
+  - Repair: 744.4596 seconds
+  - Evaluation: 103.9444 seconds
+
+Results:
+  - Valid Patch Found: True
+  - Best Fitness: 1.0000
+  - Best F1 Score: 1.0000
+  - Total Patches Found: 19
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_1(8)[1.00]
+Found 6 equivalent patches.
+Mutations: [InsertBoth(6,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 1.0
+RECALL: 1.0
+ACCURACY: 1.0
+F1 SCORE: 1.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -5,9 +5,9 @@
+             m = y
+         elif x < z:
+             m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+             m = x
+-    return m
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(10)[0.97]
+Found 9 equivalent patches.
+Mutations: [InsertBoth(5,11), Replace(1,10)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [35/50]
+NOW FAILING: [15/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.7692307692307693
+RECALL: 1.0
+ACCURACY: 0.85
+F1 SCORE: 0.8695652173913044
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,14 @@
+ def middle(x, y, z):
+-    m = z
++    m = x
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            return m
++            if x < z:
++                m = y
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(8)[0.97]
+Found 2 equivalent patches.
+Mutations: [Replace(1,10), Delete(6)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [35/50]
+NOW FAILING: [15/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.7692307692307693
+RECALL: 1.0
+ACCURACY: 0.85
+F1 SCORE: 0.8695652173913044
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,12 @@
+ def middle(x, y, z):
+-    m = z
++    m = x
+     if y < z:
+         if x < y:
+             m = y
+         elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++            pass
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(8)[0.97]
+Found 2 equivalent patches.
+Mutations: [Replace(1,10), Delete(5)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [35/50]
+NOW FAILING: [15/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.7692307692307693
+RECALL: 1.0
+ACCURACY: 0.85
+F1 SCORE: 0.8695652173913044
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,12 @@
+ def middle(x, y, z):
+-    m = z
++    m = x
+     if y < z:
+         if x < y:
+             m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++        else:
++            pass
++    elif x > y:
++        m = y
++    elif x > z:
++        m = x
++    return m
+
+____________________________________________________________________________________________________
+

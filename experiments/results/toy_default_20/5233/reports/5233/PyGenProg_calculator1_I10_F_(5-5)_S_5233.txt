@@ -1,0 +1,705 @@
+APPROACH: PyGenProg
+SUBJECT: calculator_1
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 5 failing, 5 passing (Total: 10)
+  - (Baseline) Validation: 1 failing, 10 passing (Total: 11)
+
+Execution Times:
+  - Test Case Gathering: 0.9825 seconds
+  - Repair: 670.0809 seconds
+  - Evaluation: 372.8841 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.0909
+  - Best F1 Score: 0.0000
+  - Total Patches Found: 25
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 2 equivalent patches.
+Mutations: [InsertBoth(20,14)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -7,7 +5,6 @@
+ from math import cos as rcos
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +16,15 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+-    return eval(arg)+    return eval(arg)
++    return rtan(x)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(7)[0.09]
+Found 2 equivalent patches.
+Mutations: [InsertBoth(6,15)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,10 +6,12 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+     x = max(x, 0)
++
++    def cos(x):
++        return rcos(x)
+     approx = None
+     guess = x / 2
+     while approx != guess:
+@@ -19,18 +19,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(3)[0.09]
+Found 2 equivalent patches.
+Mutations: [Replace(11,11)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -7,7 +5,6 @@
+ from math import cos as rcos
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +16,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 3 equivalent patches.
+Mutations: [InsertBoth(3,15)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,13 +1,13 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+ """
+ from math import cos as rcos
+ from math import sin as rsin
++
++def cos(x):
++    return rcos(x)
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +19,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 3 equivalent patches.
+Mutations: [InsertBoth(7,5)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,29 +6,25 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+     x = max(x, 0)
+     approx = None
++    'Computes the square root of x, using the Newton-Raphson method'
+     guess = x / 2
+     while approx != guess:
+         approx = guess
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(10)[0.09]
+Found 2 equivalent patches.
+Mutations: [InsertBoth(7,17)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,10 +6,12 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+     x = max(x, 0)
++
++    def sin(x):
++        return rsin(x)
+     approx = None
+     guess = x / 2
+     while approx != guess:
+@@ -19,18 +19,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(9)[0.09]
+Found 2 equivalent patches.
+Mutations: [InsertBoth(2,1)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,13 +1,11 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+ """
+ from math import cos as rcos
++from math import cos as rcos
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +17,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(3)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(20,16)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -7,7 +5,6 @@
+ from math import cos as rcos
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -19,18 +16,15 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+-    return eval(arg)+    return eval(arg)
++    return rcos(x)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(9,12)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -7,7 +5,6 @@
+ from math import cos as rcos
+ from math import sin as rsin
+ from math import tan as rtan
+-
+ 
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+@@ -18,19 +15,16 @@
+         approx = guess
+         guess = (approx + x / approx) / 2
+     return approx
+-
++    return approx
+ 
+ def tan(x):
+     return rtan(x)
+ 
+-
+ def cos(x):
+     return rcos(x)
+-
+ 
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(9)[0.09]
+Found 4 equivalent patches.
+Mutations: [Delete(6)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [1/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,10 +6,9 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+-    x = max(x, 0)
++    pass
+     approx = None
+     guess = x / 2
+     while approx != guess:
+@@ -19,18 +16,14 @@
+         guess = (approx + x / approx) / 2
+     return approx
+ 
+-
+ def tan(x):
+     return rtan(x)
+-
+ 
+ def cos(x):
+     return rcos(x)
+ 
+-
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(11,15)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,7 +6,6 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+     x = max(x, 0)
+@@ -16,21 +13,20 @@
+     guess = x / 2
+     while approx != guess:
+         approx = guess
++
++        def cos(x):
++            return rcos(x)
+         guess = (approx + x / approx) / 2
+     return approx
+-
+ 
+ def tan(x):
+     return rtan(x)
+ 
+-
+ def cos(x):
+     return rcos(x)
+-
+ 
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(9)[0.09]
+Found 1 equivalent patches.
+Mutations: [InsertBoth(10,13)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/calc/__init__.py
++++ src/calc/__init__.py
+@@ -1,5 +1,3 @@
+-#!/bin/python3
+-
+ """
+ This file contains the code under test for the example bug.
+ The sqrt() method fails on x <= 0.
+@@ -8,7 +6,6 @@
+ from math import sin as rsin
+ from math import tan as rtan
+ 
+-
+ def sqrt(x):
+     """Computes the square root of x, using the Newton-Raphson method"""
+     x = max(x, 0)
+@@ -16,21 +13,20 @@
+     guess = x / 2
+     while approx != guess:
+         approx = guess
++
++        def tan(x):
++            return rtan(x)
+         guess = (approx + x / approx) / 2
+     return approx
+-
+ 
+ def tan(x):
+     return rtan(x)
+ 
+-
+ def cos(x):
+     return rcos(x)
+-
+ 
+ def sin(x):
+     return rsin(x)
+ 
+-
+ def main(arg):
+     return eval(arg)
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/calculator_1(8)[0.09]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+

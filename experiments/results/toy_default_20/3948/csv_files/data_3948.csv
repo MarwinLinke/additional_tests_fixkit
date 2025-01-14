@@ -1,0 +1,85 @@
+approach,subject,bug_id,iterations,engine,variant,additional_failing,additional_passing,baseline_failing,baseline_passing,fault_localization_tests,validation_tests,test_collection_duration,repair_duration,evaluation_duration,best_fitness,precision,recall,f1_score,accuracy,patches,generations
+PyGenProg,middle,1,10,sequential,B,0,0,1,1,2,2,1.0689024925231934,286.4069256782532,280.4063801765442,0.09090909090909091,0.0,0.0,0.0,0.5,29,10
+PyGenProg,middle,1,10,sequential,B,0,0,1,10,11,11,2.5435259342193604,285.27166652679443,57.973660945892334,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,2,7
+PyGenProg,middle,1,10,sequential,F,5,5,1,10,10,11,0.846088171005249,267.2251353263855,248.8670256137848,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,32,10
+PyGenProg,middle,1,10,sequential,F,10,10,1,10,20,11,1.0420401096343994,257.1222987174988,251.9383900165558,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,32,10
+PyGenProg,middle,1,10,sequential,F,30,30,1,10,60,11,0.7944772243499756,238.70582795143127,187.33093881607056,0.09090909090909091,0.0,0.0,0.0,0.5,20,10
+PyGenProg,middle,1,10,sequential,F,50,50,1,10,100,11,1.2306437492370605,248.26388788223267,49.8936665058136,0.9581818181818181,0.684931506849315,1.0,0.8130081300813007,0.77,13,10
+PyGenProg,middle,1,10,sequential,V,5,5,1,10,11,10,0.9251329898834229,243.3537585735321,56.335511922836304,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,2,7
+PyGenProg,middle,1,10,sequential,V,10,10,1,10,11,20,0.8037559986114502,261.3466730117798,45.26765847206116,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,2,7
+PyGenProg,middle,1,10,sequential,V,30,30,1,10,11,60,0.7967753410339355,475.1127429008484,58.28986144065857,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,22,10
+PyGenProg,middle,1,10,sequential,V,50,50,1,10,11,100,0.7207601070404053,471.1894292831421,56.331663608551025,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,10,10
+PyGenProg,middle,1,10,sequential,C,5,5,0,0,10,10,0.7673933506011963,221.18234634399414,60.23878002166748,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,1,9
+PyGenProg,middle,1,10,sequential,C,10,10,0,0,20,20,0.9043660163879395,228.03381323814392,58.85534191131592,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,1,9
+PyGenProg,middle,1,10,sequential,C,30,30,0,0,60,60,0.7806849479675293,517.8650147914886,47.74273467063904,0.9581818181818181,0.684931506849315,1.0,0.8130081300813007,0.77,27,10
+PyGenProg,middle,1,10,sequential,C,50,50,0,0,100,100,0.8015642166137695,486.02177810668945,51.85607051849365,0.9581818181818181,0.684931506849315,1.0,0.8130081300813007,0.77,21,10
+PyGenProg,middle,2,10,sequential,B,0,0,1,1,2,2,1.0613982677459717,184.9023575782776,44.096800804138184,1.0,1.0,1.0,1.0,1.0,2,2
+PyGenProg,middle,2,10,sequential,B,0,0,1,10,11,11,0.813162088394165,241.25956320762634,40.39663863182068,1.0,1.0,1.0,1.0,1.0,1,5
+PyGenProg,middle,2,10,sequential,F,5,5,1,10,10,11,0.8507473468780518,158.0006411075592,39.47785663604736,1.0,1.0,1.0,1.0,1.0,1,4
+PyGenProg,middle,2,10,sequential,F,10,10,1,10,20,11,1.0315802097320557,157.76111388206482,47.418426752090454,1.0,1.0,1.0,1.0,1.0,1,4
+PyGenProg,middle,2,10,sequential,F,30,30,1,10,60,11,0.8876416683197021,127.95307183265686,61.652867794036865,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,1,2
+PyGenProg,middle,2,10,sequential,F,50,50,1,10,100,11,1.257558822631836,145.03579473495483,52.32821035385132,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,1,2
+PyGenProg,middle,2,10,sequential,V,5,5,1,10,11,10,0.878187894821167,327.54550075531006,41.03467774391174,0.9581818181818181,0.684931506849315,1.0,0.8130081300813007,0.77,18,10
+PyGenProg,middle,2,10,sequential,V,10,10,1,10,11,20,0.8662583827972412,203.41280841827393,39.27869486808777,1.0,1.0,1.0,1.0,1.0,1,5
+PyGenProg,middle,2,10,sequential,V,30,30,1,10,11,60,1.09224534034729,358.5852506160736,41.32953238487244,1.0,1.0,1.0,1.0,1.0,1,9
+PyGenProg,middle,2,10,sequential,V,50,50,1,10,11,100,0.9040837287902832,445.5462510585785,39.24461841583252,0.9818181818181818,0.8333333333333334,1.0,0.9090909090909091,0.9,16,10
+PyGenProg,middle,2,10,sequential,C,5,5,0,0,10,10,1.0102322101593018,149.78048586845398,44.67052412033081,1.0,1.0,1.0,1.0,1.0,1,4
+PyGenProg,middle,2,10,sequential,C,10,10,0,0,20,20,0.8277442455291748,154.64378380775452,37.47755694389343,1.0,1.0,1.0,1.0,1.0,1,4
+PyGenProg,middle,2,10,sequential,C,30,30,0,0,60,60,1.0222885608673096,439.75768518447876,40.2813401222229,0.9272727272727272,0.5555555555555556,1.0,0.7142857142857143,0.6,45,10
+PyGenProg,middle,2,10,sequential,C,50,50,0,0,100,100,0.776695966720581,516.8362727165222,36.738853454589844,0.9272727272727272,0.5555555555555556,1.0,0.7142857142857143,0.6,44,10
+PyGenProg,calculator,1,10,sequential,B,0,0,1,1,2,2,1.2151055335998535,338.2131013870239,324.8838028907776,0.09090909090909091,0.0,0.0,0.0,0.5,47,10
+PyGenProg,calculator,1,10,sequential,B,0,0,1,10,11,11,1.037858247756958,382.63306188583374,341.0109691619873,0.09090909090909091,0.0,0.0,0.0,0.5,26,10
+PyGenProg,calculator,1,10,sequential,F,5,5,1,10,10,11,1.0883805751800537,385.8467047214508,332.9094023704529,0.09090909090909091,0.0,0.0,0.0,0.5,39,10
+PyGenProg,calculator,1,10,sequential,F,10,10,1,10,20,11,0.8453977108001709,317.20541429519653,314.203186750412,0.09090909090909091,0.0,0.0,0.0,0.5,20,10
+PyGenProg,calculator,1,10,sequential,F,30,30,1,10,60,11,0.8943817615509033,374.35163950920105,561.6190531253815,0.09090909090909091,0.0,0.0,0.0,0.5,21,10
+PyGenProg,calculator,1,10,sequential,F,50,50,1,10,100,11,0.8223562240600586,315.4619131088257,797.7896933555603,0.09090909090909091,0.0,0.0,0.0,0.5,19,10
+GENPROG,CALCULATOR,1,10,VALIDATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,VALIDATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,VALIDATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,VALIDATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,COMPLETE,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,COMPLETE,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,COMPLETE,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,CALCULATOR,1,10,COMPLETE,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/calculator_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,BASELINE,1,1,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,BASELINE,1,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,FAULT_LOCALIZATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,FAULT_LOCALIZATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,FAULT_LOCALIZATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,FAULT_LOCALIZATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,VALIDATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,VALIDATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,VALIDATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,VALIDATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,COMPLETE,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,COMPLETE,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,COMPLETE,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,EXPRESSION,1,10,COMPLETE,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/expression_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,BASELINE,1,1,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,BASELINE,1,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,FAULT_LOCALIZATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,FAULT_LOCALIZATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,FAULT_LOCALIZATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,FAULT_LOCALIZATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,VALIDATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,VALIDATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,VALIDATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,VALIDATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,COMPLETE,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,COMPLETE,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,COMPLETE,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,1,10,COMPLETE,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_1'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,BASELINE,1,1,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,BASELINE,1,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,FAULT_LOCALIZATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,FAULT_LOCALIZATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,FAULT_LOCALIZATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,FAULT_LOCALIZATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,VALIDATION,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,VALIDATION,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,VALIDATION,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,VALIDATION,50,50,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,COMPLETE,5,5,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,COMPLETE,10,10,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+GENPROG,MARKUP,2,10,COMPLETE,30,30,FileNotFoundError,[Errno 2] No such file or directory: PosixPath('/vol/fob-vol7/mi21/linkemar/Evaluierung/AvicennaAPR_G4/experiments/evaluation_pipeline/tmp/markup_2'),3948,,,,,,,,,,,
+PyGenProg,markup,2,10,sequential,C,50,50,0,0,100,100,2.987957000732422,337.9900040626526,49.3289954662323,0.4109090909090909,0.45454545454545453,0.4,0.4255319148936171,0.46,6,10
