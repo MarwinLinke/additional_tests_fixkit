@@ -45,8 +45,8 @@ def create_rows(subject, bug_id, indentation, *frames):
         #checkmark = "\\cmark" if float(row["precision"]) == 1.0 else ""
         f1_score = round(float(row["f1_score"]), 2)
         f1_score_text = "\\dvalue" if f1_score == 0.0 else f"{f1_score:.2f}"
-        gen = row["generations"]
-        generations = f"({gen}) " if int(gen) != iterations or f1_score == 1.0 else ""
+        gen = int(row["generations"])
+        generations = f"({gen}) " if gen != iterations or f1_score == 1.0 else ""
        
         row_string += f"{indentation_space}{variant} & ({num_failing}, {num_passing}) & {generations}{f1_score_text} "
 
@@ -54,8 +54,8 @@ def create_rows(subject, bug_id, indentation, *frames):
             # checkmark = "\\cmark" if float(frame.loc[idx, "precision"]) == 1.0 else ""
             f1_score = round(float(frame.loc[idx, "f1_score"]), 2)
             f1_score_text = "\\dvalue" if f1_score == 0.0 else f"{f1_score:.2f}"
-            gen = frame.loc[idx, "generations"]
-            generations = f"({gen}) " if int(gen) != iterations or f1_score == 1.0 else ""
+            gen = int(frame.loc[idx, "generations"])
+            generations = f"({gen}) " if gen != iterations or f1_score == 1.0 else ""
             row_string +=  f"& {generations}{f1_score_text} "
 
         row_string += "\\\\ \n"
@@ -74,7 +74,7 @@ def create_tail(label):
 def create_table(subject, bug_id, caption, label, indentation, df1, df2, df3, df4, df5):
     return create_header(caption) + create_rows(subject, bug_id, 2, df1, df2, df3, df4, df5) + create_tail(label)
 
-PATH = "results/results_v3/#/csv_files/data_#.csv"
+PATH = "results/toy_default_20/#/csv_files/data_#.csv"
 CAPTION = "F1 scores of # with the last generation if the repair has found a patch."
 
 df1 = read_csv(1714)
@@ -82,8 +82,8 @@ df2 = read_csv(3948)
 df3 = read_csv(5233)
 df4 = read_csv(7906)
 df5 = read_csv(9312)
-subject = "markup"
+subject = "middle"
 bug_id = 2
-caption = CAPTION.replace("#", "\\markuptwo")
+caption = CAPTION.replace("#", "\\pysnooper")
 label = f"tab:results:{subject}{bug_id}"
 print(create_table(subject, bug_id, caption, label, 2, df1, df2, df3, df4, df5))

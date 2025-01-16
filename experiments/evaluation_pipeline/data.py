@@ -12,7 +12,7 @@ from debugging_benchmark.tests4py_benchmark.repository import Tests4PyBenchmarkR
 from debugging_framework.benchmark.repository import BenchmarkProgram
 from fixkit.repair.pygenprog import PyGenProg
 from fixkit.repair import GeneticRepair
-from fixkit.localization.modifier import SigmoidModifier, TopRankModifier, TopEqualRankModifier, DefaultModifier
+from fixkit.localization.modifier import SigmoidModifier, TopRankModifier, TopEqualRankModifier, DefaultModifier, WeightedTopRankModifier
 
 
 APPROACHES: Dict[str, Tuple[Type[GeneticRepair], Dict[str, float]]] = {

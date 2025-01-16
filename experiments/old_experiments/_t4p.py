@@ -3,7 +3,7 @@ import tests4py.api as t4p
 import os
 
 
-subject = t4p.fastapi_1
+subject = t4p.pysnooper_3
 report = t4p.checkout(subject)
 if report.raised:
     print("ERROR")
@@ -22,15 +22,15 @@ passing = [
     for i in range(10)
 ]
 
-af = [
-    os.path.abspath(os.path.join("repair_tests", "COOKIECUTTER_3_10-10_959", f"failing_test_{i}")) 
-    for i in range(10)
-]
-
-ap = [
-    os.path.abspath(os.path.join("repair_tests", "COOKIECUTTER_3_10-10_959", f"passing_test_{i}"))
-    for i in range(10)
-]
+#af = [
+#    os.path.abspath(os.path.join("repair_tests", "COOKIECUTTER_3_10-10_959", f"failing_test_{i}")) 
+#    for i in range(10)
+#]
+#
+#ap = [
+#    os.path.abspath(os.path.join("repair_tests", "COOKIECUTTER_3_10-10_959", f"passing_test_{i}"))
+#    for i in range(10)
+#]
 
 t4p.build()
 
@@ -42,4 +42,4 @@ print(path)
 
 output = "output_t4p.txt"
 
-t4p.systemtest_test(report.location, diversity=True)
+t4p.systemtest_test(report.location, path_or_str=path)
