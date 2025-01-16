@@ -1,4 +1,4 @@
-from data import get_benchmark_program
+#from data import get_benchmark_program
 import tests4py.api as t4p
 import os
 
