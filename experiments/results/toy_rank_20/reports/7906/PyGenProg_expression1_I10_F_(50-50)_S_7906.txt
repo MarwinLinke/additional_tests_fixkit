@@ -1,0 +1,124 @@
+APPROACH: PyGenProg
+SUBJECT: expression_1
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 50 failing, 50 passing (Total: 100)
+  - (Baseline) Validation: 1 failing, 10 passing (Total: 11)
+
+Execution Times:
+  - Test Case Gathering: 0.8402 seconds
+  - Repair: 298.7183 seconds
+  - Evaluation: 46.9228 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.0909
+  - Best F1 Score: 0.0000
+  - Total Patches Found: 2
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/expression_1(5)[0.09]
+Found 1 equivalent patches.
+Mutations: [Replace(37,37)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+--- src/expression/expr/arithmetic.py
++++ src/expression/expr/arithmetic.py
+@@ -1,39 +1,40 @@
+ class Term:
++
+     def evaluate(self) -> float | int:
+         pass
+ 
++class Binary(Term):
+ 
+-class Binary(Term):
+     def __init__(self, left: Term, right: Term):
+         self.left = left
+         self.right = right
+ 
++class Add(Binary):
+ 
+-class Add(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l + r
+ 
++class Sub(Binary):
+ 
+-class Sub(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l - r
+ 
++class Mul(Binary):
+ 
+-class Mul(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l * r
+ 
++class Div(Binary):
+ 
+-class Div(Binary):
+     def evaluate(self):
+-        l, r = self.left.evaluate(), self.right.evaluate()
++        l, r = (self.left.evaluate(), self.right.evaluate())
+         return l / r
+ 
++class Neg(Term):
+ 
+-class Neg(Term):
+     def __init__(self, term: Term):
+         self.term = term
+ 
+@@ -41,10 +42,10 @@
+         t = self.term.evaluate()
+         return -t
+ 
++class Constant(Term):
+ 
+-class Constant(Term):
+     def __init__(self, value: int):
+         self.value = value
+ 
+     def evaluate(self) -> float | int:
+-        return self.value
++        return self.value
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/expression_1(5)[0.09]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.5
+F1 SCORE: 0.0
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+

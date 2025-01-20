@@ -1,0 +1,129 @@
+APPROACH: PyGenProg
+SUBJECT: middle_1
+
+Test Cases Used:
+  - (Baseline) Fault Localization: 1 failing, 1 passing (Total: 2)
+  - (Baseline) Validation: 1 failing, 1 passing (Total: 2)
+
+Execution Times:
+  - Test Case Gathering: 0.8953 seconds
+  - Repair: 227.0200 seconds
+  - Evaluation: 83.3742 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.9273
+  - Best F1 Score: 0.7143
+  - Total Patches Found: 8
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/middle_1(12)[0.93]
+Found 5 equivalent patches.
+Mutations: [Replace(1,10), Delete(2)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [10/50]
+NOW FAILING: [40/50]
+NOW PASSING: [50/50]
+STILL FAILING: [0/50]
+PRECISION: 0.5555555555555556
+RECALL: 1.0
+ACCURACY: 0.6
+F1 SCORE: 0.7142857142857143
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,4 @@
+ def middle(x, y, z):
+-    m = z
+-    if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    m = x
++    pass
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(11)[0.03]
+Found 2 equivalent patches.
+Mutations: [Delete(2), Replace(3,8)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [18/50]
+NOW FAILING: [32/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.18
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,4 @@
+ def middle(x, y, z):
+     m = z
+-    if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    pass
++    return m
+
+____________________________________________________________________________________________________
+
+GeneticCandidate@tmp/middle_1(13)[0.03]
+Found 1 equivalent patches.
+Mutations: [Delete(2), Replace(6,16)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [18/50]
+NOW FAILING: [32/50]
+NOW PASSING: [0/50]
+STILL FAILING: [50/50]
+PRECISION: 0.0
+RECALL: 0.0
+ACCURACY: 0.18
+F1 SCORE: 0.0
+---------------------------------------
+--- src/middle/__init__.py
++++ src/middle/__init__.py
+@@ -1,13 +1,4 @@
+ def middle(x, y, z):
+     m = z
+-    if y < z:
+-        if x < y:
+-            m = y
+-        elif x < z:
+-            m = y
+-    else:
+-        if x > y:
+-            m = y
+-        elif x > z:
+-            m = x
+-    return m
++    pass
++    return m
+
+____________________________________________________________________________________________________
+

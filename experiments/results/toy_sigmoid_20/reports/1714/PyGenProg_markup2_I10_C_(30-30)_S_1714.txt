@@ -1,0 +1,41 @@
+APPROACH: PyGenProg
+SUBJECT: markup_2
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 30 failing, 30 passing (Total: 60)
+  - (Enhanced) Validation: 30 failing, 30 passing (Total: 60)
+
+Execution Times:
+  - Test Case Gathering: 2.8133 seconds
+  - Repair: 310.0595 seconds
+  - Evaluation: 45.4815 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.4109
+  - Best F1 Score: 0.4255
+  - Total Patches Found: 1
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_2(9)[0.41]
+Found 1 equivalent patches.
+Mutations: []
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [26/50]
+NOW FAILING: [24/50]
+NOW PASSING: [20/50]
+STILL FAILING: [30/50]
+PRECISION: 0.45454545454545453
+RECALL: 0.4
+ACCURACY: 0.46
+F1 SCORE: 0.4255319148936171
+---------------------------------------
+Patch could not be printed.
+
+____________________________________________________________________________________________________
+

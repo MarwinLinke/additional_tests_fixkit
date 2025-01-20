@@ -1,0 +1,76 @@
+APPROACH: PyGenProg
+SUBJECT: markup_1
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 5 failing, 5 passing (Total: 10)
+  - (Enhanced) Validation: 5 failing, 5 passing (Total: 10)
+
+Execution Times:
+  - Test Case Gathering: 2.0871 seconds
+  - Repair: 348.8726 seconds
+  - Evaluation: 40.2704 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.4182
+  - Best F1 Score: 0.5294
+  - Total Patches Found: 2
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_1(10)[0.42]
+Found 2 equivalent patches.
+Mutations: [Replace(12,13), InsertBoth(12,4), InsertBoth(10,11)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [18/50]
+STILL FAILING: [32/50]
+PRECISION: 1.0
+RECALL: 0.36
+ACCURACY: 0.68
+F1 SCORE: 0.5294117647058824
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,25 @@
+ def remove_html_markup(s):
+     tag = False
+     quote = False
+-    out = ""
+-
++    out = ''
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif c == '"' or c == "'" and tag:
++        elif c == '"' or (c == "'" and tag):
++            if not tag:
++                out = out + c
+             quote = not quote
+         elif not tag:
+-            out = out + c
+-
+-    return out
++            for c in s:
++                if c == '<' and (not quote):
++                    tag = True
++                elif c == '>' and (not quote):
++                    tag = False
++                elif c == '"' or (c == "'" and tag):
++                    quote = not quote
++                elif not tag:
++                    out = out + c
++            return out
++    return out
+
+____________________________________________________________________________________________________
+
