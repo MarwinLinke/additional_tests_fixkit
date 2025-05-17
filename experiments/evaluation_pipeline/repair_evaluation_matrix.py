@@ -73,5 +73,10 @@ class RepairEvaluationMatrix():
         string += f"ACCURACY: {self.accuracy}\n"
         string += f"F1 SCORE: {self.f1_score}\n"
         string += f"---------------------------------------"
+        string += f"STILL PASSING: [{self.still_passing}]\n"
+        string += f"NOW FAILING: [{self.now_failing}]\n"
+        string += f"NOW PASSING: [{self.now_passing}]\n"
+        string += f"STILL FAILING: [{self.still_failing}]\n"
+        string += f"---------------------------------------"
         return string
 

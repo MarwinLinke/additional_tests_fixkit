@@ -195,17 +195,17 @@ def debug_evaluation():
     logging.getLogger("tests4py").propagate = False
     debug_logger()
 
-    seed_index = 2
-    subject = "PYSNOOPER"
-    bug_id = 3
-    repair_tests_path = _generate_repair_tests(f"{subject}_{bug_id}", REPAIR_TESTS_SEEDS[seed_index], 30, 30)
-    eval_tests_path = _generate_evaluation_tests(f"{subject}_{bug_id}", EVAL_TESTS_SEED, 10, 10)
+    seed_index = 0
+    subject = "MARKUP"
+    bug_id = 2
+    repair_tests_path = _generate_repair_tests(f"{subject}_{bug_id}", REPAIR_TESTS_SEEDS[seed_index], 50, 50)
+    eval_tests_path = _generate_evaluation_tests(f"{subject}_{bug_id}", EVAL_TESTS_SEED, 50, 50)
     csv = "seed_test.csv"
     EvaluationPipeline.write_csv_header(Path(OUT) / "csv_files", csv)
     for _ in range(1):
-        #_evaluate(subject, bug_id, BASELINE, 3, 1, 10, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
-        _evaluate(subject, bug_id, LOCALIZATION, 3, 5, 5, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
-        _evaluate(subject, bug_id, LOCALIZATION, 3, 30, 30, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
+        _evaluate(subject, bug_id, COMPLETE, 10, 50, 50, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
+        #_evaluate(subject, bug_id, LOCALIZATION, 3, 5, 5, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
+        #_evaluate(subject, bug_id, LOCALIZATION, 3, 30, 30, repair_tests_path, eval_tests_path, csv, SEEDS[seed_index])
 
 
 def clean_up():

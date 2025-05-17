@@ -8,7 +8,7 @@ report = t4p.checkout(subject)
 if report.raised:
     print("ERROR")
 
-print(report)
+#print(report)
 
 systemtests_path = os.path.join("tmp", subject.get_identifier(), "tests4py_systemtest_diversity")
 

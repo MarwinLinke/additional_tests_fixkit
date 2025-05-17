@@ -1,0 +1,69 @@
+APPROACH: PyGenProg
+SUBJECT: markup_2
+
+Test Cases Used:
+  - (Enhanced) Fault Localization: 50 failing, 50 passing (Total: 100)
+  - (Enhanced) Validation: 50 failing, 50 passing (Total: 100)
+
+Execution Times:
+  - Test Case Gathering: 1.7365 seconds
+  - Repair: 398.0483 seconds
+  - Evaluation: 13.8227 seconds
+
+Results:
+  - Valid Patch Found: False
+  - Best Fitness: 0.6909
+  - Best F1 Score: 0.7952
+  - Total Patches Found: 16
+  - Generations Completed: 10/10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sorted patches by descending fitness:
+
+GeneticCandidate@tmp/markup_2(8)[0.69]
+Found 16 equivalent patches.
+Mutations: [InsertBoth(4,8)]
+
+---------- Evaluation Matrix ----------
+STILL PASSING: [50/50]
+NOW FAILING: [0/50]
+NOW PASSING: [33/50]
+STILL FAILING: [17/50]
+PRECISION: 1.0
+RECALL: 0.66
+ACCURACY: 0.83
+F1 SCORE: 0.7951807228915663
+---------------------------------------STILL PASSING: [['/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_0', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_1', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_2', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_3', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_4', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_5', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_6', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_7', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_8', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_9', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_10', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_11', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_12', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_13', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_14', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_15', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_16', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_17', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_18', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_19', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_20', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_21', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_22', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_23', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_24', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_25', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_26', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_27', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_28', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_29', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_30', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_31', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_32', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_33', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_34', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_35', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_36', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_37', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_38', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_39', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_40', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_41', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_42', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_43', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_44', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_45', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_46', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_47', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_48', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/passing_test_49']]
+NOW FAILING: [[]]
+NOW PASSING: [['/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_0', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_2', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_4', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_5', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_7', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_8', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_9', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_10', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_11', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_13', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_14', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_16', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_17', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_18', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_20', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_22', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_23', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_24', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_27', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_28', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_30', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_31', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_32', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_35', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_36', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_37', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_38', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_39', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_40', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_45', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_47', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_48', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_49']]
+STILL FAILING: [['/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_1', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_3', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_6', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_12', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_15', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_19', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_21', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_25', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_26', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_29', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_33', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_34', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_41', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_42', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_43', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_44', '/home/marwin/GitHub/AvicennaFixKit/experiments/evaluation_pipeline/evaluation_tests/MARKUP_2_50-50_0/failing_test_46']]
+---------------------------------------
+--- src/markup/__init__.py
++++ src/markup/__init__.py
+@@ -1,16 +1,15 @@
+ def remove_html_markup(s):
+     tag = True
+     quote = False
+-    out = ""
+-
++    out = ''
++    tag = False
+     for c in s:
+-        if c == "<" and not quote:
++        if c == '<' and (not quote):
+             tag = True
+-        elif c == ">" and not quote:
++        elif c == '>' and (not quote):
+             tag = False
+-        elif (c == '"' or c == "'") and tag:  # <-- FIX
++        elif (c == '"' or c == "'") and tag:
+             quote = not quote
+         elif not tag:
+             out = out + c
+-
+-    return out
++    return out
+
+____________________________________________________________________________________________________
+

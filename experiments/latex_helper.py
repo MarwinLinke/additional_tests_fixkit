@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-variant_names = {"B" : "Baseline", "F" : "Fault Localization", "V" : "Validation", "C": "Complete"}
+variant_names = {"B" : "Baseline", "F" : "Localization", "V" : "Validation", "C": "Complete"}
 
 def read_csv(seed):
     file = PATH.replace("#", str(seed))
@@ -11,11 +11,13 @@ def create_header(caption, *frames):
     header = """
 \\begin{table}[]
     \\centering
-    \\caption{#\\\\}   
-    \\begin{tabular}{lr|rrrrr}
+    \\caption{#}
+    \\vspace{5mm}
+    \\scriptsize   
+    \\begin{tabular}{lc|rrrrr}
         \\toprule
-        Variant & Test Cases & Seed 1714 & 3948 & 5233 & 7906 & 9312\\\\
-        \\midrule
+        \\multirow{2}{*}{Variant} & \\multirow{2}{*}{Test cases} & \\multicolumn{5}{c}{\\textsc{Seeds}} \\\\
+        &  & \\multicolumn{1}{c}{1714} & \\multicolumn{1}{c}{3948} & \\multicolumn{1}{c}{5233} & \\multicolumn{1}{c}{7906} & \\multicolumn{1}{c}{9312} \\\\
 """
 
     return header.replace("#", caption)
@@ -25,7 +27,7 @@ def create_rows(subject, bug_id, indentation, *frames):
 
     row_string = ""
     frame1: pd.DataFrame = frames[0]
-    old_variant = "Baseline"
+    old_variant = ""
 
     filtered_frame1 = frame1[(frame1["subject"] == subject) & (frame1["bug_id"] == bug_id)]
 
@@ -33,8 +35,11 @@ def create_rows(subject, bug_id, indentation, *frames):
 
         indentation_space = int(indentation) * "    " 
         variant = variant_names[row["variant"]]
+        variant_text = ""
 
-        if variant != old_variant:
+        if variant != old_variant: 
+            variant_text = "\\multirow{2}{*}{#}" if variant == "Baseline" else "\\multirow{4}{*}{#}"
+            variant_text = variant_text.replace("#", variant) 
             old_variant = variant
             row_string += f"{indentation_space}\\midrule \n"
     
@@ -48,7 +53,7 @@ def create_rows(subject, bug_id, indentation, *frames):
         gen = int(row["generations"])
         generations = f"({gen}) " if gen != iterations or f1_score == 1.0 else ""
        
-        row_string += f"{indentation_space}{variant} & ({num_failing}, {num_passing}) & {generations}{f1_score_text} "
+        row_string += f"{indentation_space}{variant_text} & ({num_failing}, {num_passing}) & {generations}{f1_score_text} "
 
         for frame in frames[1:]:
             # checkmark = "\\cmark" if float(frame.loc[idx, "precision"]) == 1.0 else ""
@@ -74,8 +79,8 @@ def create_tail(label):
 def create_table(subject, bug_id, caption, label, indentation, df1, df2, df3, df4, df5):
     return create_header(caption) + create_rows(subject, bug_id, 2, df1, df2, df3, df4, df5) + create_tail(label)
 
-PATH = "results/toy_default_20/#/csv_files/data_#.csv"
-CAPTION = "F1 scores of # with the last generation if the repair has found a patch."
+PATH = "results/toy_equal_20/#/csv_files/data_#.csv"
+CAPTION = "Results of #."
 
 df1 = read_csv(1714)
 df2 = read_csv(3948)
@@ -84,6 +89,6 @@ df4 = read_csv(7906)
 df5 = read_csv(9312)
 subject = "middle"
 bug_id = 2
-caption = CAPTION.replace("#", "\\pysnooper")
-label = f"tab:results:{subject}{bug_id}"
+caption = CAPTION.replace("#", "\\middletwo")
+label = f"tab:results:{subject}{bug_id}:default"
 print(create_table(subject, bug_id, caption, label, 2, df1, df2, df3, df4, df5))

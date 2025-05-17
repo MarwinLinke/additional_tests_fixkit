@@ -1,0 +1,2 @@
+approach,subject,bug_id,iterations,engine,variant,additional_failing,additional_passing,baseline_failing,baseline_passing,fault_localization_tests,validation_tests,test_collection_duration,repair_duration,evaluation_duration,best_fitness,precision,recall,f1_score,accuracy,patches,generations
+PyGenProg,markup,2,10,sequential,C,50,50,0,0,100,100,1.736487627029419,398.04826498031616,13.822735071182251,0.6909090909090909,1.0,0.66,0.7951807228915663,0.83,16,10
